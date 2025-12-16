@@ -149,7 +149,7 @@ function LoginPage() {
               </div>
               <div className="form-group">
                 <label htmlFor="direccion">Dirección</label>
-                <input type="text" id="direccion" name="direccion" value={regDireccion} onChange={(e) => setRegDireccion(e.target.value)} required minLength="10" />
+                <input type="text" id="direccion" name="direccion" value={regDireccion} onChange={(e) => setRegDireccion(e.target.value)} required minLength="10" /> {/* CORRECCIÓN AQUÍ: setRegDireccion */}
               </div>
               <button type="submit">🎮 Registrarse</button>
             </form>
