@@ -1,5 +1,5 @@
 /* ==================================
- * GAMEHUB - NUEVO ESTILO MODERNO
+ * GAMEHUB - ESTILO NEON MODERNO
  * Colores: Verde Neon (#00ff88), Negro (#0a0a0f), Amarillo Neon (#ffff00)
  * ================================== */
 
@@ -300,7 +300,7 @@ nav ul li a:hover {
 }
 
 /* ==================================
-   HERO SECTION NEON
+   HERO SECTION NEON - PARA TODAS LAS PÁGINAS
    ================================== */
 .hero {
     text-align: center;
@@ -361,7 +361,7 @@ nav ul li a:hover {
 }
 
 /* ==================================
-   FEATURE CARDS NEON
+   FEATURE CARDS NEON - PARA HOMEPAGE
    ================================== */
 .features {
     display: grid;
@@ -427,6 +427,44 @@ nav ul li a:hover {
     font-size: 1rem;
     position: relative;
     z-index: 1;
+}
+
+/* ==================================
+   CONTENIDO PRINCIPAL - GENERAL
+   ================================== */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    padding: 20px 0 40px;
+    min-height: calc(100vh - 5rem - 100px);
+}
+
+/* ==================================
+   CORRECCIÓN ESPECÍFICA SOLO PARA HOMEPAGE
+   ================================== */
+/* Esto asegura que SOLO en el HomePage el hero y features se apilen correctamente */
+main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+/* Hero más separado SOLO en HomePage */
+main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) .hero {
+    margin-bottom: 4rem;
+    width: 100%;
+}
+
+/* Features debajo del hero SOLO en HomePage */
+main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) .features {
+    margin-top: 0;
+    width: 100%;
 }
 
 /* ==================================
@@ -952,83 +990,6 @@ tbody tr:nth-child(even):hover {
 }
 
 /* ==================================
-   RESPONSIVE DESIGN
-   ================================== */
-@media (max-width: 1024px) {
-    .features {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    }
-    
-    nav ul {
-        gap: 0.5rem;
-    }
-    
-    nav ul li a {
-        padding: 0.5rem 1rem;
-        font-size: 13px;
-    }
-}
-
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        height: auto;
-        padding: 1rem;
-        gap: 1rem;
-    }
-    
-    nav ul {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.5rem;
-    }
-    
-    nav ul li a {
-        padding: 0.5rem 0.75rem;
-        font-size: 12px;
-    }
-    
-    .hero h1 {
-        font-size: 2.5rem;
-    }
-    
-    .hero p {
-        font-size: 1rem;
-    }
-    
-    .productos-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 1rem;
-        padding: 1rem;
-    }
-    
-    .footer-content {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .footer-links {
-        justify-content: center;
-        gap: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .footer-links {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .logo::before {
-        font-size: 1.5rem;
-    }
-    
-    .logo::after {
-        font-size: 0.625rem;
-    }
-}
-
-/* ==================================
    ANIMACIONES ESPECIALES
    ================================== */
 @keyframes cartBounce {
@@ -1079,6 +1040,131 @@ tbody tr:nth-child(even):hover {
     margin: 1.5rem 0;
     text-align: center;
     animation: glow 2s ease-in-out infinite;
+}
+
+/* ==================================
+   RESPONSIVE DESIGN
+   ================================== */
+@media (max-width: 1024px) {
+    .features {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+    
+    nav ul {
+        gap: 0.5rem;
+    }
+    
+    nav ul li a {
+        padding: 0.5rem 1rem;
+        font-size: 13px;
+    }
+    
+    .hero h1 {
+        font-size: 2.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    nav ul li a {
+        padding: 0.5rem 0.75rem;
+        font-size: 12px;
+    }
+    
+    .hero {
+        padding: 4rem 1.5rem;
+        margin: 1rem auto 3rem auto;
+    }
+    
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+    
+    .hero p {
+        font-size: 1.1rem;
+    }
+    
+    .features {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+        padding: 0 1.5rem 3rem;
+        margin-bottom: 3rem;
+    }
+    
+    .productos-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .footer-links {
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .user-icon {
+        font-size: 1.2rem;
+        padding: 6px;
+        min-width: 36px;
+        min-height: 36px;
+    }
+    
+    .dropdown-menu {
+        position: fixed;
+        right: 10px;
+        top: 80px;
+        min-width: 150px;
+        z-index: 1001;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-links {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .logo::before {
+        font-size: 1.5rem;
+    }
+    
+    .logo::after {
+        font-size: 0.625rem;
+    }
+    
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    .features {
+        grid-template-columns: 1fr;
+        padding: 0 1rem 2rem;
+    }
+    
+    .feature-card {
+        padding: 1.5rem;
+    }
 }
 
 /* Efecto de partículas para fondos especiales */
