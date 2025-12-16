@@ -6,7 +6,7 @@ function Footer() {
     <footer className="footer">
       <div className="footer-content">
         {/* El símbolo de copyright funciona igual en JSX */}
-        <p>&copy; 2025 GameHub. Todos los derechos reservados.</p>
+        <p>&copy; 2025 GameHub. Todos los derechos reservados a TheRexInformatics</p>
         <div className="footer-links">
           <a href="#">Términos de Servicio</a>
           <a href="#">Política de Privacidad</a>
