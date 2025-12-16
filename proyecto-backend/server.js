@@ -20,7 +20,7 @@ const MONGO_URI = "mongodb+srv://viplat:572364@posterdream.dialyf6.mongodb.net/G
 // MIDDLEWARE
 // ==================================
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8080'],
+  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8080', 'https://gamehub-fullstack.vercel.app', 'https://gamehub-fullstack.vercel.app/'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
