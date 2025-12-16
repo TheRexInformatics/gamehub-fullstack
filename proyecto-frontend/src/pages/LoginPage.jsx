@@ -48,7 +48,7 @@ function LoginPage() {
     }
   };
 
-    const handleRegister = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     if (regPassword !== regConfirmPassword) {
@@ -57,7 +57,6 @@ function LoginPage() {
     }
 
     try {
-      // ¡CORRECCIÓN AQUÍ! Usa backticks rectos: `
       const res = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -150,7 +149,7 @@ function LoginPage() {
               </div>
               <div className="form-group">
                 <label htmlFor="direccion">Dirección</label>
-                <input type="text" id="direccion" name="direccion" value={regDireccion} onChange={(e) => setRegDireccion(e.target.value)} required minLength="10" /> {/* CORRECCIÓN AQUÍ: setRegDireccion */}
+                <input type="text" id="direccion" name="direccion" value={regDireccion} onChange={(e) => setRegDireccion(e.target.value)} required minLength="10" />
               </div>
               <button type="submit">🎮 Registrarse</button>
             </form>
