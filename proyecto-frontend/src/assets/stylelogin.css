@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -9,22 +10,29 @@ html, body {
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
     background-color: #0a0a0f;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    overflow-x: hidden;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 0, 0.1) 0%, transparent 50%);
+    background-attachment: fixed;
 }
 
+/* HEADER DE LOGIN */
 header {
-    background: linear-gradient(135deg, #0c2461 0%, #1e3799 50%, #4a69bd 100%);
-    border-bottom: 2px solid #00a8ff;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid #00ff88;
     height: 82px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 168, 255, 0.3);
+    padding: 1.25rem;
+    box-shadow: 0 4px 20px rgba(0, 255, 136, 0.1);
 }
 
 .logo {
@@ -33,29 +41,34 @@ header {
 
 .logo::before {
     content: "GAMEHUB";
-    color: #00a8ff;
+    color: #00ff88;
     font-size: 32px;
-    font-weight: 800;
+    font-weight: 900;
     letter-spacing: 1px;
-    text-shadow: 0 0 10px rgba(0, 168, 255, 0.7), 0 0 20px rgba(0, 168, 255, 0.4);
+    text-shadow: 
+        0 0 10px rgba(0, 255, 136, 0.7),
+        0 0 20px rgba(0, 255, 136, 0.4),
+        0 0 30px rgba(0, 255, 136, 0.2);
     font-family: 'Arial Black', 'Segoe UI', sans-serif;
 }
 
 .logo::after {
     content: "Tu destino gaming";
-    color: #fbc531;
-    font-size: 12px;
-    font-weight: 500;
+    color: #ffff00;
+    font-size: 11px;
+    font-weight: 600;
     display: block;
-    margin-top: -5px;
-    letter-spacing: 2px;
+    margin-top: -2px;
+    letter-spacing: 3px;
+    text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
 }
 
+/* FORMULARIO DE LOGIN EN HEADER */
 .loginNav {
     display: flex;
     align-items: flex-end;
-    gap: 15px;
-    padding-bottom: 8px;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
 }
 
 .correo,
@@ -67,32 +80,34 @@ header {
 
 .correo p,
 .contrasena p {
-    color: #00a8ff;
+    color: #00ff88;
     font-size: 11px;
     font-weight: 600;
-    margin-bottom: 2px;
+    margin-bottom: 0.25rem;
     text-shadow: 0 1px 1px rgba(0,0,0,0.3);
 }
 
 .correo input,
 .contrasena input {
-    padding: 8px 10px;
-    border: 1px solid rgba(0, 168, 255, 0.4);
+    padding: 0.5rem 0.75rem;
+    border: 1px solid rgba(0, 255, 136, 0.4);
     border-radius: 6px;
     font-size: 11px;
     width: 160px;
     height: 28px;
-    background: rgba(25, 42, 86, 0.8);
+    background: rgba(20, 20, 25, 0.8);
     outline: none;
-    color: #f5f6fa;
+    color: #f0f0f0;
     transition: all 0.3s ease;
 }
 
 .correo input:focus,
 .contrasena input:focus {
-    border-color: #00a8ff;
-    box-shadow: 0 0 10px rgba(0, 168, 255, 0.5);
-    background: rgba(35, 55, 110, 0.9);
+    border-color: #00ff88;
+    box-shadow: 
+        0 0 10px rgba(0, 255, 136, 0.5),
+        inset 0 0 5px rgba(0, 255, 136, 0.1);
+    background: rgba(30, 30, 35, 0.9);
 }
 
 .contrasena {
@@ -100,56 +115,74 @@ header {
 }
 
 .contrasena a {
-    color: #d6c5e0;
+    color: #ffff00;
     font-size: 11px;
     text-decoration: none;
-    margin-top: 2px;
+    margin-top: 0.25rem;
     position: absolute;
     top: 42px;
     left: 0;
     white-space: nowrap;
-}
-
-.contrasena a:hover {
-    color: #00a8ff;
-    text-decoration: underline;
-}
-
-.BtnIngresar {
-    background: linear-gradient(135deg, #00a8ff 0%, #0097e6 100%);
-    border: 1px solid rgba(0, 168, 255, 0.5);
-    color: white;
-    font-size: 11px;
-    font-weight: bold;
-    padding: 6px 12px;
-    height: 28px;
-    cursor: pointer;
-    text-shadow: 0 1px 1px rgba(0,0,0,0.3);
-    margin-top: 14px;
-    border-radius: 6px;
     transition: all 0.3s ease;
 }
 
+.contrasena a:hover {
+    color: #00ff88;
+    text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
+}
+
+.BtnIngresar {
+    background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+    border: 1px solid rgba(0, 255, 136, 0.5);
+    color: #0a0a0f;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 0.375rem 0.75rem;
+    height: 28px;
+    cursor: pointer;
+    margin-top: 0.875rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.BtnIngresar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 0, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.BtnIngresar:hover::before {
+    left: 100%;
+}
+
 .BtnIngresar:hover {
-    background: linear-gradient(135deg, #0097e6 0%, #0088cc 100%);
+    background: linear-gradient(135deg, #00cc66 0%, #00aa55 100%);
     transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(0, 168, 255, 0.4);
+    box-shadow: 
+        0 5px 15px rgba(0, 255, 136, 0.4),
+        0 0 10px rgba(0, 255, 136, 0.2);
 }
 
 .BtnIngresar:active {
     transform: translateY(0);
 }
 
-/* Main content area */
+/* MAIN CONTENT AREA */
 main {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px 20px;
-    background-image: url('/gaming-background.jpg');
-    background-size: cover;
-    background-position: center;
+    padding: 2.5rem 1.25rem;
     position: relative; 
 }
 
@@ -160,7 +193,7 @@ main::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(10, 10, 15, 0.85) 0%, rgba(30, 40, 120, 0.7) 100%);
+    background: rgba(10, 10, 15, 0.9);
     z-index: 0; 
 }
 
@@ -171,25 +204,29 @@ main::before {
     align-items: center;
     position: relative; 
     z-index: 1; 
+    gap: 3rem;
 }
 
+/* BANNER */
 .banner {
     width: 100%;
     max-width: 500px;
     height: auto;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    background: linear-gradient(135deg, #0c2461 0%, #1e3799 100%);
+    border-radius: 20px;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 0 50px rgba(0, 255, 136, 0.05);
+    background: rgba(20, 20, 25, 0.9);
     display: flex;
     text-align: center;
     align-items: center;
     justify-content: center;
     min-height: 300px;
-    color: #00a8ff;
+    color: #00ff88;
     font-size: 24px;
-    font-weight: bold;
-    padding: 20px;
-    border: 2px solid rgba(0, 168, 255, 0.3);
+    font-weight: 900;
+    padding: 2rem;
+    border: 2px solid rgba(0, 255, 136, 0.3);
     position: relative;
     overflow: hidden;
 }
@@ -201,7 +238,7 @@ main::before {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0, 168, 255, 0.1), transparent);
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
     transition: 0.5s;
 }
 
@@ -209,53 +246,89 @@ main::before {
     left: 100%;
 }
 
+.banner h3 {
+    position: relative;
+    z-index: 1;
+    text-shadow: 
+        0 0 10px rgba(0, 255, 136, 0.5),
+        0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+/* REGISTER CONTAINER */
 .register-container {
-    background: linear-gradient(145deg, rgba(25, 42, 86, 0.95) 0%, rgba(44, 62, 80, 0.95) 100%);
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    background: rgba(20, 20, 25, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(0, 255, 136, 0.1);
     width: 45%;
     max-width: 450px;
-    border: 1px solid rgba(0, 168, 255, 0.3);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.register-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: 
+        radial-gradient(circle at 30% 30%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(255, 255, 0, 0.1) 0%, transparent 50%);
+    animation: rotate 20s linear infinite;
 }
 
 .register-container h2 {
-    color: #00a8ff;
-    margin-bottom: 25px;
+    color: #ffff00;
+    margin-bottom: 1.5rem;
     text-align: center;
     font-size: 28px;
-    font-weight: 700;
-    text-shadow: 0 0 10px rgba(0, 168, 255, 0.3);
+    font-weight: 900;
+    text-shadow: 0 0 10px rgba(255, 255, 0, 0.3);
+    position: relative;
+    z-index: 1;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
+    position: relative;
+    z-index: 1;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 8px;
-    color: #00a8ff;
+    margin-bottom: 0.5rem;
+    color: #00ff88;
     font-size: 14px;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .form-group input {
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid rgba(0, 168, 255, 0.4);
-    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(0, 255, 136, 0.4);
+    border-radius: 10px;
     font-size: 14px;
     transition: all 0.3s ease;
-    background-color: rgba(35, 55, 110, 0.8);
-    color: #f5f6fa;
+    background-color: rgba(30, 30, 35, 0.9);
+    color: #f0f0f0;
+    font-family: inherit;
 }
 
 .form-group input:focus {
     outline: none;
-    border-color: #00a8ff;
-    box-shadow: 0 0 15px rgba(0, 168, 255, 0.5);
-    background-color: rgba(45, 70, 130, 0.9);
+    border-color: #00ff88;
+    box-shadow: 
+        0 0 15px rgba(0, 255, 136, 0.3),
+        inset 0 0 10px rgba(0, 255, 136, 0.1);
+    background-color: rgba(40, 40, 45, 0.9);
 }
 
 .form-group input::placeholder {
@@ -264,39 +337,59 @@ main::before {
 
 .register-container button {
     width: 100%;
-    padding: 15px;
-    background: linear-gradient(135deg, #00a8ff 0%, #0097e6 100%);
-    color: white;
+    padding: 1rem;
+    background: linear-gradient(135deg, #ffff00 0%, #ffcc00 100%);
+    color: #0a0a0f;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 900;
     cursor: pointer;
     transition: all 0.3s ease;
     text-shadow: 0 1px 1px rgba(0,0,0,0.2);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-top: 10px;
+    margin-top: 0.5rem;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.register-container button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent);
+    transition: 0.5s;
+}
+
+.register-container button:hover::before {
+    left: 100%;
 }
 
 .register-container button:hover {
-    background: linear-gradient(135deg, #0097e6 0%, #0088cc 100%);
+    background: linear-gradient(135deg, #ffcc00 0%, #ffaa00 100%);
     transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 168, 255, 0.4);
+    box-shadow: 
+        0 10px 20px rgba(255, 255, 0, 0.4),
+        0 0 15px rgba(255, 255, 0, 0.3);
 }
 
 .register-container button:active {
     transform: translateY(-1px);
 }
 
-/* Footer */
+/* FOOTER */
 .footer {
-    background: linear-gradient(135deg, #0c2461 0%, #1e3799 100%);
-    color: #dcdde1;
-    padding: 30px 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(10px);
+    color: #d0d0d0;
+    padding: 2rem 1.25rem;
     margin-top: auto;
-    border-top: 2px solid #00a8ff;
+    border-top: 2px solid #00ff88;
 }
 
 .footer-content {
@@ -307,51 +400,72 @@ main::before {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    gap: 1.25rem;
 }
 
 .footer-links {
     display: flex;
-    gap: 25px;
+    gap: 1.5rem;
     flex-wrap: wrap;
 }
 
 .footer-links a {
-    color: #00a8ff;
+    color: #ffff00;
     text-decoration: none;
     font-size: 14px;
     transition: color 0.3s ease;
     white-space: nowrap;
     font-weight: 600;
-    padding: 5px 10px;
-    border-radius: 4px;
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-links a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+    transition: 0.5s;
+}
+
+.footer-links a:hover::before {
+    left: 100%;
 }
 
 .footer-links a:hover {
-    color: white;
-    background: rgba(0, 168, 255, 0.2);
-    text-shadow: 0 0 10px rgba(0, 168, 255, 0.5);
+    color: #00ff88;
+    background: rgba(0, 255, 136, 0.1);
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
 }
 
 .error-message {
-    color: #ff6b6b;
+    color: #ff4757;
     font-size: 12px;
-    margin-top: 5px;
+    margin-top: 0.375rem;
     font-weight: 500;
+    text-shadow: 0 0 5px rgba(255, 71, 87, 0.3);
 }
 
-/* Responsive adjustments */
+/* RESPONSIVE */
 @media (max-width: 1024px) {
     .hero {
         width: 100%;
         flex-direction: column;
         text-align: center;
+        gap: 2rem;
     }
     
     .banner {
         width: 100%;
-        padding-right: 0;
-        margin-bottom: 30px;
+        max-width: 100%;
+        margin-bottom: 0;
+        min-height: 250px;
     }
     
     .register-container {
@@ -362,19 +476,24 @@ main::before {
 
 @media (max-width: 768px) {
     header {
-        padding: 0 10px;
+        padding: 0 0.625rem;
         height: 60px;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.75rem;
     }
 
     .loginNav {
-        gap: 8px;
+        gap: 0.5rem;
+        width: 100%;
+        justify-content: center;
     }
 
     .correo input,
     .contrasena input {
         width: 120px;
         height: 24px;
-        padding: 6px 8px;
+        padding: 0.375rem 0.5rem;
     }
 
     .logo::before {
@@ -386,12 +505,16 @@ main::before {
     }
 
     main {
-        padding: 20px 15px;
+        padding: 1.25rem 0.75rem;
+    }
+
+    .hero {
+        gap: 1.5rem;
     }
 
     .register-container {
-        padding: 25px;
-        margin: 0 10px;
+        padding: 1.5rem;
+        margin: 0 0.625rem;
     }
 
     .footer-content {
@@ -401,14 +524,14 @@ main::before {
 
     .footer-links {
         justify-content: center;
-        gap: 15px;
+        gap: 0.75rem;
     }
 }
 
 @media (max-width: 480px) {
     .footer-links {
         flex-direction: column;
-        gap: 10px;
+        gap: 0.5rem;
     }
     
     .banner h3 {
@@ -419,4 +542,13 @@ main::before {
     .contrasena input {
         width: 100px;
     }
+    
+    .register-container h2 {
+        font-size: 24px;
+    }
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
