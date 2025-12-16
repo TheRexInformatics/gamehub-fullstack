@@ -1,26 +1,27 @@
-// frontend/src/config.js
-// ============================================
-// CONFIGURACIÓN PARA GAMEHUB - DESARROLLO Y PRODUCCIÓN
+// frontend/src/config.js - VERSIÓN CORREGIDA
 // ============================================
 
-// Detectar automáticamente si estamos en localhost
-const isLocalhost = window.location.hostname === 'localhost' || 
-                    window.location.hostname === '127.0.0.1';
-
-// URL de tu backend desplegado en Render
+// 1. Definimos las URLs directamente (sin usar 'window' aquí)
 const BACKEND_URL_PRODUCTION = "https://gamehub-fullstack.onrender.com";
-
-// URL para desarrollo local
 const BACKEND_URL_DEVELOPMENT = "http://localhost:5000";
 
-// Exportar la URL correcta según el entorno
-export const API_URL = isLocalhost 
-  ? BACKEND_URL_DEVELOPMENT    // Desarrollo local
-  : BACKEND_URL_PRODUCTION;    // Producción en Render
+// 2. SOLO en el navegador, decidimos cuál usar
+let API_URL = BACKEND_URL_PRODUCTION; // Valor por defecto seguro para el build
 
-// Opcional: Mostrar en consola para depuración
-console.log(`🔧 GameHub Config:
-  Entorno: ${isLocalhost ? 'Desarrollo Local' : 'Producción'}
-  Backend URL: ${API_URL}
-  Frontend URL: ${window.location.origin}
-`);
+// 3. Esta parte SOLO se ejecuta en el navegador (no durante el build de Vercel)
+if (typeof window !== 'undefined') {
+  const isLocalhost = window.location.hostname === 'localhost' || 
+                      window.location.hostname === '127.0.0.1';
+  
+  API_URL = isLocalhost ? BACKEND_URL_DEVELOPMENT : BACKEND_URL_PRODUCTION;
+  
+  // 4. El console.log también SOLO en el navegador
+  console.log(`🔧 GameHub Config:
+    Entorno: ${isLocalhost ? 'Desarrollo Local' : 'Producción'}
+    Backend URL: ${API_URL}
+    Frontend URL: ${window.location.origin}
+  `);
+}
+
+// 5. Exportamos
+export { API_URL };

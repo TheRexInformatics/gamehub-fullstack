@@ -48,7 +48,7 @@ function LoginPage() {
     }
   };
 
-  const handleRegister = async (e) => {
+    const handleRegister = async (e) => {
     e.preventDefault();
 
     if (regPassword !== regConfirmPassword) {
@@ -57,6 +57,7 @@ function LoginPage() {
     }
 
     try {
+      // ¡CORRECCIÓN AQUÍ! Usa backticks rectos: `
       const res = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
