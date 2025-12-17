@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../config';
 
 function CarritoPage() {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState({ items: [] });
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -23,18 +23,31 @@ function CarritoPage() {
       });
       
       if (!res.ok) {
-        if (res.status === 404) {
-          setCart([]);
+        if (res.status === 401) {
+          // Token inválido
+          localStorage.removeItem('token');
+          localStorage.removeItem('isAdmin');
+          alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+          navigate('/login');
           return;
         }
+        
+        if (res.status === 404) {
+          // Carrito no encontrado (vacío)
+          setCart({ items: [] });
+          return;
+        }
+        
         throw new Error('Error al cargar el carrito');
       }
       
       const data = await res.json();
-      setCart(data.items || []);
+      // Asegurarse de que data tenga la estructura correcta
+      setCart(data.items ? data : { items: data || [] });
+      
     } catch (error) {
-      console.error("Error:", error);
-      setCart([]);
+      console.error("Error al cargar carrito:", error);
+      setCart({ items: [] });
     } finally {
       setLoading(false);
     }
@@ -47,20 +60,33 @@ function CarritoPage() {
   const handleRemoveItem = async (itemId) => {
     const token = localStorage.getItem('token');
     try {
+      // 🔧 CORRECCIÓN: La ruta ya es correcta en el backend
       const res = await fetch(`${API_URL}/api/cart/remove/${itemId}`, {
         method: 'DELETE',
         headers: { 'x-auth-token': token }
       });
       
-      if (!res.ok) throw new Error('Error al eliminar item');
-      fetchCart();
+      if (!res.ok) {
+        if (res.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('isAdmin');
+          alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+          navigate('/login');
+          return;
+        }
+        throw new Error('Error al eliminar item');
+      }
+      
+      alert('Item eliminado del carrito');
+      fetchCart(); // Recargar el carrito
+      
     } catch (error) {
-      alert(error.message);
+      alert(`Error: ${error.message}`);
     }
   };
 
   const handleClearCart = async () => {
-    if (!window.confirm('¿Vaciar carrito?')) return;
+    if (!window.confirm('¿Estás seguro de que quieres vaciar tu carrito?')) return;
     
     const token = localStorage.getItem('token');
     try {
@@ -69,36 +95,52 @@ function CarritoPage() {
         headers: { 'x-auth-token': token }
       });
       
-      if (!res.ok) throw new Error('Error al vaciar carrito');
-      setCart([]);
+      if (!res.ok) {
+        if (res.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('isAdmin');
+          alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+          navigate('/login');
+          return;
+        }
+        throw new Error('Error al vaciar carrito');
+      }
+      
+      setCart({ items: [] });
+      alert('Carrito vaciado correctamente');
+      
     } catch (error) {
-      alert(error.message);
+      alert(`Error: ${error.message}`);
     }
   };
 
   const handleCheckout = async (e) => {
     e.preventDefault();
     
+    // Validaciones
     if (!userName || !email) {
-      alert('Ingresa nombre e email');
+      alert('Por favor, ingresa tu nombre y email para la orden.');
       return;
     }
     
-    if (cart.length === 0) {
-      alert('Carrito vacío');
+    if (cart.items.length === 0) {
+      alert('Tu carrito está vacío.');
       return;
     }
 
     const token = localStorage.getItem('token');
     try {
+      // 🔧 CORRECCIÓN: Verificar estructura de datos para el backend
       const orderData = {
-        items: cart.map(item => ({
-          juego: item.juego?._id || item.juego,
-          cantidad: item.cantidad
+        items: cart.items.map(item => ({
+          juego: item.juego?._id || item.juego, // Asegurar que sea ObjectId
+          cantidad: item.cantidad || 1
         })),
         total: total,
-        direccion: "Dirección por definir"
+        direccion: "Dirección por definir" // Puedes agregar campo de dirección
       };
+
+      console.log("Enviando orden:", orderData);
 
       const res = await fetch(`${API_URL}/api/orders`, {
         method: 'POST',
@@ -109,23 +151,37 @@ function CarritoPage() {
         body: JSON.stringify(orderData)
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || 'Error al crear orden');
+        if (res.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('isAdmin');
+          alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+          navigate('/login');
+          return;
+        }
+        throw new Error(data.error || 'Error al crear orden');
       }
 
-      const orderResult = await res.json();
-      alert(`Orden creada: ${orderResult.orderId}`);
+      alert(`¡Orden creada exitosamente! ID: ${data.orderId}\nTotal: ${data.totalFormateado || totalFormateado}`);
       
-      handleClearCart();
+      // Vaciar carrito después de crear la orden
+      await handleClearCart();
+      
+      // Redirigir a página de inicio o pedidos
+      navigate('/home');
       
     } catch (error) {
+      console.error("Error en checkout:", error);
       alert(`Error: ${error.message}`);
     }
   };
 
-  const total = cart.reduce((acc, item) => {
-    const precio = item.juego?.precio || 0;
+  // Calcular total
+  const total = cart.items.reduce((acc, item) => {
+    const juego = item.juego || {};
+    const precio = juego.precio || 0;
     const cantidad = item.cantidad || 1;
     return acc + (precio * cantidad);
   }, 0);
@@ -139,8 +195,10 @@ function CarritoPage() {
   if (loading) {
     return (
       <main className="cart-outer">
-        <div className="loading-message">
-          <p>Cargando carrito...</p>
+        <div className="cart-super-container">
+          <div className="loading-message">
+            <p>🔄 Cargando tu carrito...</p>
+          </div>
         </div>
       </main>
     );
@@ -150,16 +208,17 @@ function CarritoPage() {
     <main className="cart-outer">
       <div className="cart-super-container">
         <h1>🛒 Mi Carrito</h1>
+        
         <div className="cart-main">
           <div className="cart-items">
-            {cart.length === 0 ? (
+            {cart.items.length === 0 ? (
               <div className="empty-cart-message">
-                <p>Tu carrito está vacío</p>
+                <p>🎮 Tu carrito está vacío</p>
                 <button 
                   onClick={() => navigate('/catalogo')}
                   className="btn-ver-detalle"
                 >
-                  🎮 Ver Juegos
+                  Ver Catálogo de Juegos
                 </button>
               </div>
             ) : (
@@ -168,6 +227,7 @@ function CarritoPage() {
                   <thead>
                     <tr>
                       <th>Juego</th>
+                      <th>Plataforma</th>
                       <th>Precio</th>
                       <th>Cantidad</th>
                       <th>Subtotal</th>
@@ -175,7 +235,7 @@ function CarritoPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {cart.map((item) => {
+                    {cart.items.map((item) => {
                       const juego = item.juego || {};
                       const subtotal = (juego.precio || 0) * (item.cantidad || 1);
                       
@@ -186,8 +246,12 @@ function CarritoPage() {
                               {juego.imagen ? (
                                 <img 
                                   src={juego.imagen} 
-                                  alt={juego.titulo} 
+                                  alt={juego.titulo || 'Juego'} 
                                   className="cart-item-image"
+                                  onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = 'https://via.placeholder.com/60x60/0a0a0f/00ff88?text=🎮';
+                                  }}
                                 />
                               ) : (
                                 <div className="game-placeholder">
@@ -195,14 +259,19 @@ function CarritoPage() {
                                 </div>
                               )}
                               <div className="cart-item-details">
-                                <strong>{juego.titulo || 'Juego'}</strong>
-                                {juego.plataforma && (
+                                <strong>{juego.titulo || 'Juego sin nombre'}</strong>
+                                {juego.categoria && (
                                   <div className="game-platform">
-                                    {juego.plataforma}
+                                    {juego.categoria}
                                   </div>
                                 )}
                               </div>
                             </div>
+                          </td>
+                          <td>
+                            <span className="game-platform-badge">
+                              {juego.plataforma || 'N/A'}
+                            </span>
                           </td>
                           <td className="game-price">
                             ${(juego.precio || 0).toLocaleString('es-CL')}
@@ -219,6 +288,7 @@ function CarritoPage() {
                             <button 
                               className="acciones-btn delete-btn"
                               onClick={() => handleRemoveItem(item._id)}
+                              title="Eliminar del carrito"
                             >
                               🗑️ Eliminar
                             </button>
@@ -233,52 +303,59 @@ function CarritoPage() {
           </div>
           
           <aside className="cart-summary">
-            <h3>Resumen de Compra</h3>
+            <h3>📋 Resumen de Compra</h3>
             
             <div className="summary-details">
               <div className="summary-row">
-                <span>Subtotal:</span>
+                <span>Productos ({cart.items.length}):</span>
                 <span>${total.toLocaleString('es-CL')}</span>
               </div>
               <div className="summary-row">
                 <span>Envío:</span>
-                <span>Gratis</span>
+                <span>Gratis 🚚</span>
+              </div>
+              <div className="summary-row">
+                <span>Descuentos:</span>
+                <span>$0</span>
               </div>
               <div className="summary-total">
-                <span>Total:</span>
+                <span>Total a Pagar:</span>
                 <span>{totalFormateado}</span>
               </div>
             </div>
             
-            {cart.length > 0 && (
+            {cart.items.length > 0 && (
               <>
                 <button 
                   className="cart-btn vaciar"
                   onClick={handleClearCart}
+                  style={{ marginBottom: '15px' }}
                 >
                   🗑️ Vaciar Carrito
                 </button>
                 
                 <form onSubmit={handleCheckout} className="checkout-form">
+                  <h4>📝 Información para la Orden</h4>
+                  
                   <div className="form-group">
-                    <label>Nombre para la orden:</label>
+                    <label>Nombre completo:</label>
                     <input 
                       type="text" 
                       value={userName}
                       onChange={(e) => setUserName(e.target.value)}
-                      placeholder="Tu nombre"
+                      placeholder="Ej: Juan Pérez"
                       required
                       className="form-input"
                     />
                   </div>
                   
                   <div className="form-group">
-                    <label>Email:</label>
+                    <label>Email de contacto:</label>
                     <input 
                       type="email" 
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="tu@email.com"
+                      placeholder="ejemplo@email.com"
                       required
                       className="form-input"
                     />
@@ -287,10 +364,20 @@ function CarritoPage() {
                   <button 
                     type="submit" 
                     className="cart-btn comprar"
-                    disabled={cart.length === 0}
+                    disabled={cart.items.length === 0}
+                    style={{ marginTop: '15px' }}
                   >
                     🎮 Proceder al Pago
                   </button>
+                  
+                  <p style={{ 
+                    fontSize: '12px', 
+                    color: '#8c9db5', 
+                    textAlign: 'center',
+                    marginTop: '10px'
+                  }}>
+                    * Esta es una simulación. No se realizarán cargos reales.
+                  </p>
                 </form>
               </>
             )}
