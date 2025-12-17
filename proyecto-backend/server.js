@@ -667,99 +667,74 @@ app.post('/api/seed', async (req, res) => {
   try {
     // Datos de ejemplo para GameHub - CON IMÁGENES CORRECTAS
     const sampleGames = [
-      {
-        titulo: 'The Legend of Zelda: Breath of the Wild',
-        precio: 49990,
-        imagen: 'https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/ncom/software/switch/70010000000025/7137262b5a64d921e193653f8aa0b722925abc5680380ca0e18a5cfd91697f58',
-        plataforma: 'Nintendo Switch',
-        genero: 'Aventura',
-        desarrollador: 'Nintendo',
-        descripcion: 'Explora el vasto mundo de Hyrule en esta épica aventura.',
-        stock: 15,
-        categoria: 'juegos'
-      },
-      {
-        titulo: 'PlayStation 5',
-        precio: 599990,
-        imagen: 'https://gmedia.playstation.com/is/image/SIEPDC/ps5-product-thumbnail-01-en-14sep21?$facebook$',
-        plataforma: 'PlayStation',
-        genero: 'Consola',
-        desarrollador: 'Sony',
-        descripcion: 'Consola de nueva generación con SSD ultrarrápido.',
-        stock: 8,
-        categoria: 'consolas'
-      },
-      {
-        titulo: 'Xbox Series X',
-        precio: 549990,
-        imagen: 'https://compass-ssl.xbox.com/assets/b9/0a/b90ad58f-9950-44a7-87fa-1ee8f0f6a63e.jpg?n=XBX_A-BuyBoxBGImage01-D.png',
-        plataforma: 'Xbox',
-        genero: 'Consola',
-        desarrollador: 'Microsoft',
-        descripcion: 'La consola más potente de Microsoft.',
-        stock: 12,
-        categoria: 'consolas'
-      },
-      {
-        titulo: 'Headset Gaming Logitech G733',
-        precio: 89990,
-        imagen: 'https://resource.logitechg.com/w_692,c_lpad,ar_4:3,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/products/g733/g733-gallery-1.png?v=1',
-        plataforma: 'Multiplataforma',
-        genero: 'Accesorio',
-        desarrollador: 'Logitech',
-        descripcion: 'Audífonos inalámbricos con iluminación RGB.',
-        stock: 25,
-        categoria: 'accesorios'
-      },
-      {
-        titulo: 'Super Mario Bros. 3',
-        precio: 19990,
-        imagen: 'https://m.media-amazon.com/images/I/81Hh-+CJv8L._AC_UF1000,1000_QL80_.jpg',
-        plataforma: 'NES',
-        genero: 'Plataformas',
-        desarrollador: 'Nintendo',
-        descripcion: 'Clásico de NES, edición retro.',
-        stock: 5,
-        categoria: 'retro',
-        enOferta: true,
-        precioOferta: 14990
-      },
-      {
-        titulo: 'Cyberpunk 2077',
-        precio: 39990,
-        imagen: 'https://image.api.playstation.com/vulcan/ap/rnd/202111/3013/N2cVcJ6k2F6RHGgM2MFE6FHu.png',
-        plataforma: 'PC',
-        genero: 'RPG',
-        desarrollador: 'CD Projekt Red',
-        descripcion: 'RPG de mundo abierto en Night City.',
-        stock: 20,
-        categoria: 'juegos',
-        enOferta: true,
-        precioOferta: 29990
-      },
-      {
-        titulo: 'God of War Ragnarök',
-        precio: 54990,
-        imagen: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png',
-        plataforma: 'PlayStation 5',
-        genero: 'Acción',
-        desarrollador: 'Santa Monica Studio',
-        descripcion: 'Kratos y Atreus se aventuran en busca de respuestas.',
-        stock: 18,
-        categoria: 'juegos'
-      },
-      {
-        titulo: 'Nintendo Switch OLED',
-        precio: 399990,
-        imagen: 'https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/ncom/en_US/switch/site-design-update/switch-oled',
-        plataforma: 'Nintendo Switch',
-        genero: 'Consola',
-        desarrollador: 'Nintendo',
-        descripcion: 'Consola Switch con pantalla OLED de 7 pulgadas.',
-        stock: 10,
-        categoria: 'consolas'
-      }
-    ];
+  {
+    titulo: 'The Legend of Zelda: Breath of the Wild',
+    precio: 49990,
+    imagen: 'https://assets.nintendo.com/image/upload/ar_16:9,c_lpad,w_1240/b_white/f_auto/q_auto/ncom/software/switch/70010000000025/7137262b5a64d921e193653f8aa0b722925abc5680380ca0e18a5cfd91697f58', // Oficial Nintendo
+    plataforma: 'Nintendo Switch',
+    genero: 'Aventura',
+    desarrollador: 'Nintendo',
+    descripcion: 'Explora el vasto mundo de Hyrule en esta épica aventura.',
+    stock: 15,
+    categoria: 'juegos'
+  },
+  {
+    titulo: 'PlayStation 5 Consola',
+    precio: 599990,
+    imagen: 'https://gmedia.playstation.com/is/image/SIEPDC/ps5-product-thumbnail-01-en-14sep21?$facebook$', // Oficial PlayStation
+    plataforma: 'PlayStation',
+    genero: 'Consola',
+    desarrollador: 'Sony',
+    descripcion: 'Consola de nueva generación con SSD ultrarrápido.',
+    stock: 8,
+    categoria: 'consolas'
+  },
+  {
+    titulo: 'Xbox Series X',
+    precio: 549990,
+    imagen: 'https://compass-ssl.xbox.com/assets/b9/0a/b90ad58f-9950-44a7-87fa-1ee8f0f6a63e.jpg?n=XBX_A-BuyBoxBGImage01-D.png', // Oficial Xbox
+    plataforma: 'Xbox',
+    genero: 'Consola',
+    desarrollador: 'Microsoft',
+    descripcion: 'La consola más potente de Microsoft.',
+    stock: 12,
+    categoria: 'consolas'
+  },
+  {
+    titulo: 'Nintendo Switch OLED Model',
+    precio: 399990,
+    imagen: 'https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/ncom/en_US/switch/site-design-update/switch-oled', // Oficial Nintendo
+    plataforma: 'Nintendo Switch',
+    genero: 'Consola',
+    desarrollador: 'Nintendo',
+    descripcion: 'Consola Switch con pantalla OLED de 7 pulgadas.',
+    stock: 10,
+    categoria: 'consolas'
+  },
+  {
+    titulo: 'God of War Ragnarök',
+    precio: 54990,
+    imagen: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png', // Oficial PlayStation Store
+    plataforma: 'PlayStation 5',
+    genero: 'Acción',
+    desarrollador: 'Santa Monica Studio',
+    descripcion: 'Kratos y Atreus se aventuran en los nueve reinos.',
+    stock: 18,
+    categoria: 'juegos'
+  },
+  {
+    titulo: 'Super Mario Bros. Wonder',
+    precio: 54990,
+    imagen: 'https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/ncom/software/switch/70010000063709/32b85837be122d8c6b7c1b1d6c1a7c63b06a2cdfc5bbee5c5c0c6c6c6c6c6c6c6', // Oficial Nintendo
+    plataforma: 'Nintendo Switch',
+    genero: 'Plataformas',
+    desarrollador: 'Nintendo',
+    descripcion: 'Nueva aventura 2D de Mario con efectos Wonder.',
+    stock: 10,
+    categoria: 'juegos'
+  }
+];
+
     
     // Limpiar base de datos (opcional)
     await Game.deleteMany({});
