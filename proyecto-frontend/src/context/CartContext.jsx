@@ -12,7 +12,6 @@ export const CartProvider = ({ children }) => {
   const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
 
-  // FUNCIÓN 1: Cargar el conteo inicial
   const fetchCartCount = useCallback(async () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -21,14 +20,12 @@ export const CartProvider = ({ children }) => {
     }
     
     try {
-      // 🔧 CORRECCIÓN: Cambiado de /api/carrito a /api/cart
       const res = await fetch(`${API_URL}/api/cart`, {
         headers: { 'x-auth-token': token }
       });
       
       if (!res.ok) {
         if (res.status === 401) {
-          // Token inválido
           localStorage.removeItem('token');
           localStorage.removeItem('isAdmin');
         }
@@ -37,7 +34,6 @@ export const CartProvider = ({ children }) => {
       }
       
       const data = await res.json();
-      // El "conteo" es la suma de las "cantidades" de cada item
       const totalItems = data.items ? 
         data.items.reduce((acc, item) => acc + (item.cantidad || 0), 0) : 0;
       setCartCount(totalItems);
@@ -47,7 +43,6 @@ export const CartProvider = ({ children }) => {
     }
   }, []);
 
-  // FUNCIÓN 2: Añadir al carrito
   const addToCart = async (juegoId) => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -57,7 +52,6 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
-      // 🔧 CORRECCIÓN: Cambiado de /api/carrito/agregar a /api/cart/add
       const res = await fetch(`${API_URL}/api/cart/add`, {
         method: 'POST',
         headers: {
@@ -70,7 +64,6 @@ export const CartProvider = ({ children }) => {
       const data = await res.json();
       
       if (!res.ok) {
-        // Si es error 401, redirigir a login
         if (res.status === 401) {
           localStorage.removeItem('token');
           localStorage.removeItem('isAdmin');
@@ -81,9 +74,7 @@ export const CartProvider = ({ children }) => {
         throw new Error(data.error || 'Error al agregar al carrito');
       }
 
-      alert(data.message || 'Juego agregado al carrito');
-      
-      // Actualizar el conteo
+      alert(data.message || '✅ Producto añadido al carrito');
       await fetchCartCount();
 
     } catch (error) {
@@ -92,12 +83,10 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // FUNCIÓN 3: Limpiar el conteo
   const clearCartCount = () => {
     setCartCount(0);
   };
   
-  // 4. Compartir el estado y las funciones
   const value = {
     cartCount,
     fetchCartCount,
