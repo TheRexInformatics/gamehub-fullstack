@@ -23,10 +23,22 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    /* NUEVO: Imagen de fondo principal */
     background-image: 
-        radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 255, 0, 0.05) 0%, transparent 50%);
-    background-attachment: fixed;
+        url('/gamehub-background.png'), /* FONDO PRINCIPAL */
+        radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 0, 0.1) 0%, transparent 50%);
+    background-size: cover; /* Cubre toda la pantalla */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* No repetir */
+    background-attachment: fixed; /* Efecto parallax */
+    background-blend-mode: overlay; /* Mezcla con los gradientes */
+}
+
+/* Asegurar que el contenido sobreponga el fondo */
+main, header, footer {
+    background-color: rgba(10, 10, 15, 0.85); /* Fondo semi-transparente para legibilidad */
+    backdrop-filter: blur(5px); /* Efecto de desenfoque para mejor contraste */
 }
 
 /* ==================================
@@ -306,15 +318,15 @@ nav ul li a:hover {
     text-align: center;
     padding: 5rem 2rem;
     color: white;
-    background: rgba(10, 10, 15, 0.8);
-    backdrop-filter: blur(5px);
+    background: rgba(10, 10, 15, 0.85); /* Más opaco para mejor legibilidad */
+    backdrop-filter: blur(10px);
     margin: 2rem auto;
     border-radius: 20px;
     max-width: 1200px;
     width: 90%;
     border: 1px solid rgba(0, 255, 136, 0.2);
     box-shadow: 
-        0 10px 30px rgba(0, 0, 0, 0.5),
+        0 10px 30px rgba(0, 0, 0, 0.7),
         inset 0 0 50px rgba(0, 255, 136, 0.05);
     position: relative;
     overflow: hidden;
@@ -344,10 +356,11 @@ nav ul li a:hover {
     margin-bottom: 1.5rem;
     font-weight: 900;
     text-shadow: 
-        0 0 10px rgba(0, 255, 136, 0.5),
-        0 0 20px rgba(0, 255, 136, 0.3);
+        0 0 10px rgba(0, 255, 136, 0.7),
+        0 0 20px rgba(0, 255, 136, 0.4),
+        0 0 30px rgba(0, 255, 136, 0.2);
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 .hero p {
@@ -357,7 +370,8 @@ nav ul li a:hover {
     margin: 0 auto;
     line-height: 1.6;
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
 
 /* ==================================
@@ -374,13 +388,13 @@ nav ul li a:hover {
 }
 
 .feature-card {
-    background: rgba(20, 20, 25, 0.8);
+    background: rgba(20, 20, 25, 0.9);
     backdrop-filter: blur(10px);
     border-radius: 16px;
     padding: 2rem;
     box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(0, 255, 136, 0.1);
+        0 8px 25px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(0, 255, 136, 0.2);
     text-align: center;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     color: #f0f0f0;
@@ -407,9 +421,9 @@ nav ul li a:hover {
 .feature-card:hover {
     transform: translateY(-10px) scale(1.02);
     box-shadow: 
-        0 15px 35px rgba(0, 255, 136, 0.2),
-        0 0 20px rgba(0, 255, 136, 0.1),
-        inset 0 0 0 1px rgba(0, 255, 136, 0.3);
+        0 15px 35px rgba(0, 255, 136, 0.3),
+        0 0 20px rgba(0, 255, 136, 0.2),
+        inset 0 0 0 1px rgba(0, 255, 136, 0.4);
     border-color: #00ff88;
 }
 
@@ -418,7 +432,9 @@ nav ul li a:hover {
     margin-bottom: 1rem;
     font-size: 1.5rem;
     font-weight: 700;
-    text-shadow: 0 0 10px rgba(255, 255, 0, 0.3);
+    text-shadow: 
+        0 0 10px rgba(255, 255, 0, 0.5),
+        0 0 20px rgba(255, 255, 0, 0.2);
 }
 
 .feature-card p {
@@ -427,6 +443,7 @@ nav ul li a:hover {
     font-size: 1rem;
     position: relative;
     z-index: 1;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
 
 /* ==================================
@@ -481,12 +498,13 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
 }
 
 .game-card {
-    background: rgba(20, 20, 25, 0.9);
+    background: rgba(20, 20, 25, 0.95);
+    backdrop-filter: blur(10px);
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(0, 255, 136, 0.1);
+        0 8px 25px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(0, 255, 136, 0.2);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
@@ -497,9 +515,9 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
 .game-card:hover {
     transform: translateY(-10px) scale(1.02);
     box-shadow: 
-        0 15px 35px rgba(0, 255, 136, 0.3),
-        0 0 25px rgba(0, 255, 136, 0.2),
-        inset 0 0 0 1px rgba(0, 255, 136, 0.4);
+        0 15px 35px rgba(0, 255, 136, 0.4),
+        0 0 25px rgba(0, 255, 136, 0.3),
+        inset 0 0 0 1px rgba(0, 255, 136, 0.5);
     border-color: #00ff88;
 }
 
@@ -552,7 +570,9 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     font-weight: 700;
     min-height: 3rem;
     line-height: 1.3;
-    text-shadow: 0 0 5px rgba(255, 255, 0, 0.3);
+    text-shadow: 
+        0 0 10px rgba(255, 255, 0, 0.4),
+        0 0 20px rgba(255, 255, 0, 0.2);
 }
 
 .game-meta {
@@ -564,7 +584,7 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
 
 .genre {
     color: #00ff88;
-    background: rgba(0, 255, 136, 0.1);
+    background: rgba(0, 255, 136, 0.15);
     padding: 4px 10px;
     border-radius: 12px;
     font-weight: 600;
@@ -572,7 +592,7 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
 
 .rating {
     color: #ffff00;
-    background: rgba(255, 255, 0, 0.1);
+    background: rgba(255, 255, 0, 0.15);
     padding: 4px 10px;
     border-radius: 12px;
     font-weight: 600;
@@ -584,8 +604,8 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     font-size: 1.75rem;
     margin-bottom: 1rem;
     text-shadow: 
-        0 0 10px rgba(255, 255, 0, 0.3),
-        0 0 20px rgba(255, 255, 0, 0.1);
+        0 0 15px rgba(255, 255, 0, 0.5),
+        0 0 30px rgba(255, 255, 0, 0.2);
 }
 
 .btn-ver-detalle {
@@ -615,7 +635,7 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 0, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 0, 0.3), transparent);
     transition: 0.5s;
 }
 
@@ -627,8 +647,8 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     background: linear-gradient(135deg, #00cc66 0%, #00aa55 100%);
     transform: translateY(-2px);
     box-shadow: 
-        0 5px 15px rgba(0, 255, 136, 0.4),
-        0 0 10px rgba(0, 255, 136, 0.2);
+        0 5px 20px rgba(0, 255, 136, 0.6),
+        0 0 15px rgba(0, 255, 136, 0.3);
 }
 
 /* ==================================
@@ -669,13 +689,13 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     background: linear-gradient(135deg, #00cc66 0%, #00aa55 100%);
     transform: translateY(-3px);
     box-shadow: 
-        0 5px 20px rgba(0, 255, 136, 0.4),
-        0 0 15px rgba(0, 255, 136, 0.3);
+        0 8px 25px rgba(0, 255, 136, 0.6),
+        0 0 20px rgba(0, 255, 136, 0.3);
 }
 
 .btn-volver {
     display: inline-block;
-    background: rgba(20, 20, 25, 0.8);
+    background: rgba(20, 20, 25, 0.9);
     color: #00ff88;
     border: 1px solid #00ff88;
     padding: 0.75rem 1.5rem;
@@ -709,8 +729,8 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     background: #00ff88;
     color: #0a0a0f;
     box-shadow: 
-        0 0 15px rgba(0, 255, 136, 0.5),
-        0 0 30px rgba(0, 255, 136, 0.2);
+        0 0 20px rgba(0, 255, 136, 0.7),
+        0 0 40px rgba(0, 255, 136, 0.3);
 }
 
 /* ==================================
@@ -724,13 +744,14 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     gap: 1.25rem;
     max-width: 600px;
     margin: 0 auto 3rem;
-    background: rgba(20, 20, 25, 0.9);
+    background: rgba(20, 20, 25, 0.95);
+    backdrop-filter: blur(10px);
     padding: 2rem;
     border-radius: 16px;
-    border: 1px solid rgba(0, 255, 136, 0.2);
+    border: 1px solid rgba(0, 255, 136, 0.3);
     box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.4),
-        0 0 20px rgba(0, 255, 136, 0.05);
+        0 10px 30px rgba(0, 0, 0, 0.8),
+        0 0 25px rgba(0, 255, 136, 0.1);
 }
 
 .admin-form label,
@@ -743,6 +764,7 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     letter-spacing: 0.5px;
     display: block;
     margin-bottom: 0.5rem;
+    text-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
 }
 
 .admin-form input,
@@ -754,10 +776,10 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
 .checkout-form input {
     width: 100%;
     padding: 0.875rem 1rem;
-    border: 1px solid rgba(0, 255, 136, 0.3);
+    border: 1px solid rgba(0, 255, 136, 0.4);
     border-radius: 8px;
     font-size: 16px;
-    background: rgba(30, 30, 35, 0.9);
+    background: rgba(30, 30, 35, 0.95);
     color: #f0f0f0;
     transition: all 0.3s ease;
     font-family: inherit;
@@ -773,9 +795,9 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     outline: none;
     border-color: #00ff88;
     box-shadow: 
-        0 0 15px rgba(0, 255, 136, 0.3),
-        inset 0 0 10px rgba(0, 255, 136, 0.1);
-    background: rgba(40, 40, 45, 0.9);
+        0 0 20px rgba(0, 255, 136, 0.4),
+        inset 0 0 15px rgba(0, 255, 136, 0.1);
+    background: rgba(40, 40, 45, 0.95);
 }
 
 /* ==================================
@@ -787,10 +809,12 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     margin-top: 1rem;
     position: relative;
     border-radius: 12px;
-    border: 1px solid rgba(0, 255, 136, 0.2);
+    border: 1px solid rgba(0, 255, 136, 0.3);
     box-shadow: 
-        0 5px 20px rgba(0, 0, 0, 0.3),
-        inset 0 0 10px rgba(0, 255, 136, 0.05);
+        0 8px 25px rgba(0, 0, 0, 0.8),
+        inset 0 0 15px rgba(0, 255, 136, 0.1);
+    background: rgba(20, 20, 25, 0.95);
+    backdrop-filter: blur(10px);
 }
 
 .table-container::-webkit-scrollbar {
@@ -810,13 +834,13 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
 table {
     width: 100%;
     border-collapse: collapse;
-    background: rgba(20, 20, 25, 0.9);
+    background: rgba(20, 20, 25, 0.95);
 }
 
 th, td {
     padding: 1rem;
     text-align: left;
-    border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+    border-bottom: 1px solid rgba(0, 255, 136, 0.2);
     color: #f0f0f0;
 }
 
@@ -841,16 +865,16 @@ tbody tr {
 }
 
 tbody tr:hover {
-    background: rgba(0, 255, 136, 0.1);
+    background: rgba(0, 255, 136, 0.15);
     transform: scale(1.005);
 }
 
 tbody tr:nth-child(even) {
-    background: rgba(0, 255, 136, 0.03);
+    background: rgba(0, 255, 136, 0.05);
 }
 
 tbody tr:nth-child(even):hover {
-    background: rgba(0, 255, 136, 0.15);
+    background: rgba(0, 255, 136, 0.2);
 }
 
 /* ==================================
@@ -898,7 +922,7 @@ tbody tr:nth-child(even):hover {
 .edit-btn:hover {
     background: linear-gradient(135deg, #00cc66 0%, #00aa55 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 255, 136, 0.4);
+    box-shadow: 0 5px 15px rgba(0, 255, 136, 0.5);
 }
 
 .delete-btn {
@@ -909,7 +933,7 @@ tbody tr:nth-child(even):hover {
 .delete-btn:hover {
     background: linear-gradient(135deg, #ff3838 0%, #ff1e1e 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(255, 71, 87, 0.4);
+    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.5);
 }
 
 .view-btn {
@@ -920,7 +944,7 @@ tbody tr:nth-child(even):hover {
 .view-btn:hover {
     background: linear-gradient(135deg, #ffcc00 0%, #ffaa00 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(255, 255, 0, 0.4);
+    box-shadow: 0 5px 15px rgba(255, 255, 0, 0.5);
 }
 
 /* ==================================
@@ -937,6 +961,7 @@ tbody tr:nth-child(even):hover {
     width: 100%;
     flex-shrink: 0;
     border-top: 2px solid #00ff88;
+    box-shadow: 0 -5px 20px rgba(0, 255, 136, 0.1);
 }
 
 .footer-content {
@@ -966,6 +991,7 @@ tbody tr:nth-child(even):hover {
     border-radius: 6px;
     position: relative;
     overflow: hidden;
+    text-shadow: 0 0 5px rgba(255, 255, 0, 0.3);
 }
 
 .footer-links a::before {
@@ -986,7 +1012,9 @@ tbody tr:nth-child(even):hover {
 .footer-links a:hover {
     color: #00ff88;
     background: rgba(0, 255, 136, 0.1);
-    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    text-shadow: 
+        0 0 10px rgba(0, 255, 136, 0.5),
+        0 0 20px rgba(0, 255, 136, 0.2);
 }
 
 /* ==================================
@@ -998,8 +1026,12 @@ tbody tr:nth-child(even):hover {
 }
 
 @keyframes glow {
-    0%, 100% { box-shadow: 0 0 5px rgba(0, 255, 136, 0.3); }
-    50% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.6); }
+    0%, 100% { 
+        box-shadow: 0 0 10px rgba(0, 255, 136, 0.4); 
+    }
+    50% { 
+        box-shadow: 0 0 25px rgba(0, 255, 136, 0.8); 
+    }
 }
 
 @keyframes float {
@@ -1022,24 +1054,26 @@ tbody tr:nth-child(even):hover {
 
 .error-message {
     color: #ff4757;
-    background: rgba(255, 71, 87, 0.1);
-    border: 1px solid rgba(255, 71, 87, 0.3);
+    background: rgba(255, 71, 87, 0.15);
+    border: 1px solid rgba(255, 71, 87, 0.4);
     padding: 1rem;
     border-radius: 8px;
     margin: 1.5rem 0;
     text-align: center;
     animation: glow 2s ease-in-out infinite;
+    backdrop-filter: blur(5px);
 }
 
 .success-message {
     color: #00ff88;
-    background: rgba(0, 255, 136, 0.1);
-    border: 1px solid rgba(0, 255, 136, 0.3);
+    background: rgba(0, 255, 136, 0.15);
+    border: 1px solid rgba(0, 255, 136, 0.4);
     padding: 1rem;
     border-radius: 8px;
     margin: 1.5rem 0;
     text-align: center;
     animation: glow 2s ease-in-out infinite;
+    backdrop-filter: blur(5px);
 }
 
 /* ============================================================
