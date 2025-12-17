@@ -343,7 +343,7 @@ nav ul li a:hover {
 .hero h1 {
     color: #00ff88;
     font-size: 3.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     font-weight: 900;
     text-shadow: 
         0 0 15px rgba(0, 255, 136, 0.8),
@@ -359,6 +359,8 @@ nav ul li a:hover {
     box-shadow: 
         0 0 25px rgba(0, 255, 136, 0.5),
         0 0 50px rgba(0, 255, 136, 0.2);
+    width: 90%;
+    max-width: 800px;
 }
 
 /* SUBTÍTULOS MEJORADOS */
@@ -376,6 +378,9 @@ nav ul li a:hover {
     border-radius: 15px;
     display: inline-block;
     border: 1px solid rgba(255, 255, 0, 0.3);
+    width: 90%;
+    max-width: 700px;
+    margin-top: 1rem;
 }
 
 /* ==================================
@@ -1168,20 +1173,24 @@ table td,
 }
 
 /* ============================================================
-   CORRECCIÓN PARA TÍTULOS DE PÁGINAS - MEJOR VISIBILIDAD
+   CORRECCIÓN PARA TÍTULOS DE PÁGINAS ESPECÍFICAS
+   (JUEGOS, CONSOLAS, ACCESORIOS, RETRO, OFERTAS, CONTACTO)
    ============================================================ */
 
-/* 7. MEJORAR VISIBILIDAD DE TÍTULOS EN TODAS LAS PÁGINAS */
-main:not(:has(.hero:only-child)) .hero h1,
-.blog-main .blogs-hero h1,
-.cart-outer .cart-super-container h1,
-.contact-main .contact-hero h2,
-.productos-hero h1 {
+/* 7. CORRECCIÓN PARA PÁGINA DE CONTACTO - TÍTULO ARRIBA, DESCRIPCIÓN ABAJO */
+.contact-main .contact-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px !important;
+}
+
+.contact-main .contact-hero h2 {
     background: rgba(0, 0, 0, 0.75);
     padding: 20px 40px;
     border-radius: 20px;
-    display: inline-block;
-    margin-bottom: 25px;
+    margin-bottom: 0 !important;
     border: 3px solid rgba(0, 255, 136, 0.4);
     box-shadow: 
         0 0 30px rgba(0, 255, 136, 0.6),
@@ -1190,63 +1199,71 @@ main:not(:has(.hero:only-child)) .hero h1,
         0 0 20px rgba(0, 255, 136, 0.9),
         0 0 35px rgba(0, 255, 136, 0.6),
         0 0 50px rgba(0, 255, 136, 0.3) !important;
+    color: #00ff88 !important;
+    font-size: 3rem !important;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(0, 20, 10, 0.95)) !important;
+    width: 90%;
+    max-width: 800px;
 }
 
-/* 8. MEJORAR SUBTÍTULOS */
-main:not(:has(.hero:only-child)) .hero p,
-.blog-main .blogs-hero p,
-.cart-outer .cart-super-container p,
-.contact-main .contact-hero p,
+.contact-main .contact-hero p {
+    background: rgba(0, 0, 0, 0.65);
+    padding: 15px 30px;
+    border-radius: 15px;
+    border: 2px solid rgba(255, 255, 0, 0.3);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    font-size: 1.3rem;
+    width: 90%;
+    max-width: 700px;
+    margin-top: 0 !important;
+}
+
+/* 8. CORRECCIÓN PARA PÁGINAS DE CATÁLOGO (JUEGOS, CONSOLAS, ACCESORIOS, RETRO, OFERTAS) */
+.productos-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px !important;
+}
+
+.productos-hero h1 {
+    background: rgba(0, 0, 0, 0.75);
+    padding: 20px 40px;
+    border-radius: 20px;
+    margin-bottom: 0 !important;
+    border: 3px solid rgba(0, 255, 136, 0.4);
+    box-shadow: 
+        0 0 30px rgba(0, 255, 136, 0.6),
+        0 0 60px rgba(0, 255, 136, 0.3);
+    text-shadow: 
+        0 0 20px rgba(0, 255, 136, 0.9),
+        0 0 35px rgba(0, 255, 136, 0.6),
+        0 0 50px rgba(0, 255, 136, 0.3) !important;
+    color: #00ff88 !important;
+    font-size: 3.2rem !important;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(10, 10, 15, 0.95)) !important;
+    width: 90%;
+    max-width: 800px;
+    order: 1 !important;
+}
+
 .productos-hero p {
     background: rgba(0, 0, 0, 0.65);
     padding: 15px 30px;
     border-radius: 15px;
-    display: inline-block;
-    max-width: 85%;
     border: 2px solid rgba(255, 255, 0, 0.3);
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
     font-size: 1.3rem;
+    width: 90%;
+    max-width: 700px;
+    margin-top: 0 !important;
+    order: 2 !important;
 }
 
-/* 9. TÍTULOS ESPECÍFICOS PARA CADA PÁGINA */
-/* Página de Juegos/Productos */
-.productos-hero h1 {
-    color: #00ff88 !important;
-    font-size: 3.2rem !important;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(10, 10, 15, 0.95)) !important;
-    border-color: rgba(0, 255, 136, 0.5) !important;
-}
-
-/* Página de Blog */
-.blog-main .blogs-hero h1 {
-    color: #ffff00 !important;
-    font-size: 3.2rem !important;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(20, 10, 0, 0.95)) !important;
-    border-color: rgba(255, 255, 0, 0.5) !important;
-}
-
-/* Página de Contacto */
-.contact-main .contact-hero h2 {
-    color: #00ff88 !important;
-    font-size: 3rem !important;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(0, 20, 10, 0.95)) !important;
-    border-color: rgba(0, 255, 136, 0.5) !important;
-}
-
-/* Página de Carrito */
-.cart-outer .cart-super-container h1 {
-    color: #ffff00 !important;
-    font-size: 3.2rem !important;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(20, 15, 0, 0.95)) !important;
-    border-color: rgba(255, 255, 0, 0.5) !important;
-}
-
-/* 10. MEJORAR CONTRASTE GENERAL DE HERO SECTIONS */
-main:not(:has(.hero:only-child)) .hero,
-.blog-main .blogs-hero,
-.cart-outer .cart-super-container,
-.contact-main .contact-hero,
-.productos-hero {
+/* 9. MEJORAR CONTRASTE GENERAL DE HERO SECTIONS ESPECÍFICAS */
+.productos-hero,
+.contact-main .contact-hero {
     background: rgba(15, 15, 20, 0.88) !important;
     backdrop-filter: blur(12px);
     border: 3px solid rgba(0, 255, 136, 0.3);
@@ -1278,13 +1295,16 @@ main:not(:has(.hero:only-child)) .hero,
         padding: 15px 30px;
     }
     
-    main:not(:has(.hero:only-child)) .hero h1,
-    .blog-main .blogs-hero h1,
-    .cart-outer .cart-super-container h1,
-    .contact-main .contact-hero h2,
-    .productos-hero h1 {
+    .productos-hero h1,
+    .contact-main .contact-hero h2 {
         font-size: 2.5rem !important;
         padding: 15px 25px;
+    }
+    
+    .productos-hero p,
+    .contact-main .contact-hero p {
+        font-size: 1.1rem;
+        padding: 12px 20px;
     }
 }
 
@@ -1315,21 +1335,33 @@ main:not(:has(.hero:only-child)) .hero,
     .hero h1 {
         font-size: 2.2rem;
         padding: 12px 20px;
+        margin-bottom: 1.5rem;
     }
     
     .hero p {
         font-size: 1.1rem;
         padding: 10px 20px;
+        margin-top: 0.5rem;
     }
     
-    main:not(:has(.hero:only-child)) .hero h1,
-    .blog-main .blogs-hero h1,
-    .cart-outer .cart-super-container h1,
-    .contact-main .contact-hero h2,
-    .productos-hero h1 {
+    .productos-hero h1,
+    .contact-main .contact-hero h2 {
         font-size: 2rem !important;
         padding: 12px 20px;
-        margin-bottom: 15px;
+        margin-bottom: 0 !important;
+    }
+    
+    .productos-hero p,
+    .contact-main .contact-hero p {
+        font-size: 1rem !important;
+        padding: 10px 20px;
+        margin-top: 0 !important;
+    }
+    
+    .productos-hero,
+    .contact-main .contact-hero {
+        padding: 3rem 1.5rem !important;
+        gap: 15px !important;
     }
     
     .features {
@@ -1395,13 +1427,22 @@ main:not(:has(.hero:only-child)) .hero,
         padding: 8px 15px;
     }
     
-    main:not(:has(.hero:only-child)) .hero h1,
-    .blog-main .blogs-hero h1,
-    .cart-outer .cart-super-container h1,
-    .contact-main .contact-hero h2,
-    .productos-hero h1 {
+    .productos-hero h1,
+    .contact-main .contact-hero h2 {
         font-size: 1.6rem !important;
         padding: 10px 15px;
+    }
+    
+    .productos-hero p,
+    .contact-main .contact-hero p {
+        font-size: 0.9rem !important;
+        padding: 8px 15px;
+    }
+    
+    .productos-hero,
+    .contact-main .contact-hero {
+        padding: 2rem 1rem !important;
+        gap: 10px !important;
     }
     
     .features {
