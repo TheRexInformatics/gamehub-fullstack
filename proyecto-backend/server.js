@@ -199,7 +199,7 @@ app.post('/api/auth/register', async (req, res) => {
       password: hashedPassword,
       rut: rut || '',
       direccion: direccion || '',
-      isAdmin: false
+      isAdmin: email === "superadmin@gamehub.com" ? true : false
     });
     
     await user.save();
