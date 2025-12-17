@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../config';
 
 function AdminGamesPage() {
+  const navigate = useNavigate();
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -53,9 +54,12 @@ function AdminGamesPage() {
     <div>
       <h1>🎮 Gestión de Juegos</h1>
 
-      <Link to="/admin/games/nuevo" className="admin-btn">
+      <button 
+        onClick={() => navigate('/admin/games/nuevo')} 
+        className="admin-btn"
+      >
         🎮 Agregar Nuevo Juego
-      </Link>
+      </button>
 
       <div style={{ height: '20px' }}></div>
 
@@ -95,23 +99,49 @@ function AdminGamesPage() {
                 <tr key={game._id}>
                   <td>
                     {game.imagen ? (
-                      <img src={game.imagen} alt={game.titulo} style={{width:'60px',height:'60px',objectFit:'cover',borderRadius:'8px',border:'1px solid rgba(0,168,255,0.3)'}} />
+                      <img 
+                        src={game.imagen} 
+                        alt={game.titulo} 
+                        style={{
+                          width: '60px',
+                          height: '60px',
+                          objectFit: 'cover',
+                          borderRadius: '8px'
+                        }}
+                      />
                     ) : (
-                      <div style={{width:'60px',height:'60px',background:'#0c2461',borderRadius:'8px',display:'flex',alignItems:'center',justifyContent:'center',color:'#00a8ff'}}>🎮</div>
+                      <div>🎮</div>
                     )}
                   </td>
                   <td>
                     <strong>{game.titulo}</strong>
-                    {game.desarrollador && <div style={{fontSize:'12px',color:'#8c9db5'}}>{game.desarrollador}</div>}
+                    {game.desarrollador && (
+                      <div>{game.desarrollador}</div>
+                    )}
                   </td>
-                  <td><span style={{background:'rgba(0,168,255,0.2)',color:'#00a8ff',padding:'4px 10px',borderRadius:'12px',fontSize:'11px'}}>{game.plataforma || 'N/A'}</span></td>
+                  <td>{game.plataforma || 'N/A'}</td>
                   <td>{game.genero || 'No especificado'}</td>
-                  <td style={{color:'#fbc531',fontWeight:'bold'}}>{formatPrice(game.precio)}</td>
-                  <td><span style={{color:game.stock>0?'#4cd137':'#e84118',fontWeight:'bold'}}>{game.stock || 0}</span></td>
+                  <td>{formatPrice(game.precio)}</td>
+                  <td>{game.stock || 0}</td>
                   <td>
-                    <Link to={`/admin/games/editar/${game._id}`} className="acciones-btn edit-btn">✏️ Editar</Link>
-                    <button onClick={() => handleDelete(game._id)} className="acciones-btn delete-btn">🗑️ Eliminar</button>
-                    <Link to={`/catalogo/${game._id}`} className="acciones-btn view-btn">👁️ Ver</Link>
+                    <button 
+                      onClick={() => navigate(`/admin/games/editar/${game._id}`)} 
+                      className="acciones-btn edit-btn"
+                    >
+                      ✏️ Editar
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(game._id)} 
+                      className="acciones-btn delete-btn"
+                    >
+                      🗑️ Eliminar
+                    </button>
+                    <button 
+                      onClick={() => navigate(`/catalogo/${game._id}`)} 
+                      className="acciones-btn view-btn"
+                    >
+                      👁️ Ver
+                    </button>
                   </td>
                 </tr>
               ))
