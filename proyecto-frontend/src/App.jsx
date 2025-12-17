@@ -44,15 +44,11 @@ function App() {
     <Route path="/perfil" element={<ProfilePage />} />
     
     <Route path="/admin" element={<AdminLayout />}>
-  <Route index element={<AdminDashboardPage />} />
-  <Route path="games" element={<AdminGamesPage />} />
-  <Route path="games/nuevo" element={<AdminNewGamePage />} />
-  <Route path="usuarios" element={<AdminUsersPage />} />
-  <Route path="ordenes" element={<AdminOrdersPage />} />
-  <Route path="estadisticas" element={<AdminStatsPage />} />
-  <Route path="blog" element={<AdminBlogPage />} />
-  <Route path="contactos" element={<AdminContactsPage />} />
-</Route>
+      <Route index element={<AdminDashboardPage />} />
+      <Route path="games" element={<AdminGamesPage />} />
+      <Route path="games/nuevo" element={<AdminNewGamePage />} />
+      <Route path="usuarios" element={<AdminUsersPage />} />
+    </Route>
   </Route>
 </Routes>
   );
