@@ -665,12 +665,12 @@ app.get('/api/admin/stats', authMiddleware, adminMiddleware, async (req, res) =>
 // 23. SEED DATA (SOLO DESARROLLO)
 app.post('/api/seed', async (req, res) => {
   try {
-    // Datos de ejemplo para GameHub
+    // Datos de ejemplo para GameHub - CON IMÁGENES CORRECTAS
     const sampleGames = [
       {
         titulo: 'The Legend of Zelda: Breath of the Wild',
         precio: 49990,
-        imagen: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co1wya.jpg',
+        imagen: 'https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/ncom/software/switch/70010000000025/7137262b5a64d921e193653f8aa0b722925abc5680380ca0e18a5cfd91697f58',
         plataforma: 'Nintendo Switch',
         genero: 'Aventura',
         desarrollador: 'Nintendo',
@@ -681,7 +681,7 @@ app.post('/api/seed', async (req, res) => {
       {
         titulo: 'PlayStation 5',
         precio: 599990,
-        imagen: 'https://cdn.shopify.com/s/files/1/0740/3815/4273/files/ps5-slim.jpg',
+        imagen: 'https://gmedia.playstation.com/is/image/SIEPDC/ps5-product-thumbnail-01-en-14sep21?$facebook$',
         plataforma: 'PlayStation',
         genero: 'Consola',
         desarrollador: 'Sony',
@@ -692,7 +692,7 @@ app.post('/api/seed', async (req, res) => {
       {
         titulo: 'Xbox Series X',
         precio: 549990,
-        imagen: 'https://cdn.shopify.com/s/files/1/0740/3815/4273/files/xbox-series-x.jpg',
+        imagen: 'https://compass-ssl.xbox.com/assets/b9/0a/b90ad58f-9950-44a7-87fa-1ee8f0f6a63e.jpg?n=XBX_A-BuyBoxBGImage01-D.png',
         plataforma: 'Xbox',
         genero: 'Consola',
         desarrollador: 'Microsoft',
@@ -703,7 +703,7 @@ app.post('/api/seed', async (req, res) => {
       {
         titulo: 'Headset Gaming Logitech G733',
         precio: 89990,
-        imagen: 'https://resource.logitechg.com/w_692,c_lpad,ar_4:3,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/products/g733/g733-gallery-1.png',
+        imagen: 'https://resource.logitechg.com/w_692,c_lpad,ar_4:3,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/products/g733/g733-gallery-1.png?v=1',
         plataforma: 'Multiplataforma',
         genero: 'Accesorio',
         desarrollador: 'Logitech',
@@ -714,7 +714,7 @@ app.post('/api/seed', async (req, res) => {
       {
         titulo: 'Super Mario Bros. 3',
         precio: 19990,
-        imagen: 'https://upload.wikimedia.org/wikipedia/en/a/a5/Super_Mario_Bros._3_coverart.png',
+        imagen: 'https://m.media-amazon.com/images/I/81Hh-+CJv8L._AC_UF1000,1000_QL80_.jpg',
         plataforma: 'NES',
         genero: 'Plataformas',
         desarrollador: 'Nintendo',
@@ -727,7 +727,7 @@ app.post('/api/seed', async (req, res) => {
       {
         titulo: 'Cyberpunk 2077',
         precio: 39990,
-        imagen: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co2ir1.jpg',
+        imagen: 'https://image.api.playstation.com/vulcan/ap/rnd/202111/3013/N2cVcJ6k2F6RHGgM2MFE6FHu.png',
         plataforma: 'PC',
         genero: 'RPG',
         desarrollador: 'CD Projekt Red',
@@ -736,21 +736,28 @@ app.post('/api/seed', async (req, res) => {
         categoria: 'juegos',
         enOferta: true,
         precioOferta: 29990
-      }
-    ];
-    
-    const sampleBlogs = [
-      {
-        titulo: 'Los 10 mejores juegos de 2024',
-        contenido: 'Repasamos los juegos más destacados del año...',
-        autor: 'Equipo GameHub',
-        categoria: 'reseña'
       },
       {
-        titulo: 'Guía: Cómo armar tu setup gaming ideal',
-        contenido: 'Todo lo que necesitas saber para crear el espacio gaming perfecto...',
-        autor: 'Equipo GameHub',
-        categoria: 'guia'
+        titulo: 'God of War Ragnarök',
+        precio: 54990,
+        imagen: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png',
+        plataforma: 'PlayStation 5',
+        genero: 'Acción',
+        desarrollador: 'Santa Monica Studio',
+        descripcion: 'Kratos y Atreus se aventuran en busca de respuestas.',
+        stock: 18,
+        categoria: 'juegos'
+      },
+      {
+        titulo: 'Nintendo Switch OLED',
+        precio: 399990,
+        imagen: 'https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/ncom/en_US/switch/site-design-update/switch-oled',
+        plataforma: 'Nintendo Switch',
+        genero: 'Consola',
+        desarrollador: 'Nintendo',
+        descripcion: 'Consola Switch con pantalla OLED de 7 pulgadas.',
+        stock: 10,
+        categoria: 'consolas'
       }
     ];
     
