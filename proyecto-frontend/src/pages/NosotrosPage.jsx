@@ -11,7 +11,7 @@ function NosotrosPage() {
       <div className="about-content">
         <section className="about-section">
           <h2>Nuestra Historia</h2>
-          <p>GameHub nació en 2025 de la pasión por los videojuegos y la comunidad gamer. Todo comenzó cuando nuestro fundador, Vicente, buscaba un lugar donde encontrar todos los juegos, consolas y accesorios en un solo sitio, con precios justos y asesoramiento real de gamers. Lo que empezó como un proyecto entre amigos se convirtió en la tienda gaming más completa, donde cada producto es probado y recomendado por verdaderos jugadores.</p>
+          <p>GameHub nació en 2025 de la pasión por los videojuegos y la comunidad gamer. Todo comenzó cuando nuestro fundador, Martín Villarroel, buscaba un lugar donde encontrar todos los juegos, consolas y accesorios en un solo sitio, con precios justos y asesoramiento real de gamers. Lo que empezó como un proyecto entre amigos se convirtió en la tienda gaming más completa, donde cada producto es probado y recomendado por verdaderos jugadores.</p>
         </section>
 
         <section className="about-section">
@@ -20,22 +20,22 @@ function NosotrosPage() {
           <div className="team-grid">
             <div className="team-member">
               <div className="member-photo">🎮</div>
-              <h3>Vicente Fernandez</h3>
+              <h3>Martín Villarroel</h3>
               <p>Fundador y CEO</p>
             </div>
             <div className="team-member">
               <div className="member-photo">🕹️</div>
-              <h3>Matias Espinoza</h3>
+              <h3>Ian Badilla</h3>
               <p>Especialista en Hardware</p>
             </div>
             <div className="team-member">
               <div className="member-photo">🎧</div>
-              <h3>Ian Badilla</h3>
+              <h3>Matías Espinoza</h3>
               <p>Community Manager</p>
             </div>
             <div className="team-member">
               <div className="member-photo">🔥</div>
-              <h3>Martin Villarroel</h3>
+              <h3>Vicente Placencia</h3>
               <p>Especialista en Juegos</p>
             </div>
           </div>
