@@ -1109,7 +1109,7 @@ tbody tr:nth-child(even):hover {
 .loading {
     text-align: center;
     padding: 3rem;
-    color: #d0d0d0;
+    color: #dcdde1;
 }
 
 .error-message {
@@ -1407,6 +1407,342 @@ table td,
 }
 
 /* ==================================
+   ESTILOS PARA PÁGINA DE CARRITO
+   ================================== */
+
+/* Contenedor principal del carrito */
+.cart-outer {
+    width: 100%;
+    min-height: calc(100vh - 5rem - 100px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0;
+}
+
+.cart-super-container {
+    background: rgba(20, 20, 25, 0.92);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
+    border: 2px solid rgba(0, 255, 136, 0.3);
+    box-shadow: 0 15px 35px rgba(0, 255, 136, 0.15);
+}
+
+.cart-super-container h1 {
+    color: #ffff00;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    text-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+    border-bottom: 2px solid rgba(255, 255, 0, 0.3);
+    padding-bottom: 1rem;
+}
+
+/* Layout principal del carrito */
+.cart-main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 900px) {
+    .cart-main {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Sección de items del carrito */
+.cart-items {
+    background: rgba(25, 25, 30, 0.8);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+/* Tabla del carrito */
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cart-table thead {
+    background: rgba(0, 255, 136, 0.1);
+}
+
+.cart-table th {
+    padding: 1rem;
+    text-align: left;
+    color: #00ff88;
+    font-weight: 700;
+    border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.cart-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    vertical-align: middle;
+}
+
+.cart-table tr:hover {
+    background: rgba(0, 255, 136, 0.05);
+}
+
+/* Imagen de items del carrito */
+.cart-item-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+.game-placeholder {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #0a0a0f, #1a1a2e);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #00ff88;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+/* Información de item del carrito */
+.cart-item-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cart-item-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.game-platform {
+    color: #8c9db5;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+.game-price {
+    color: #ffff00;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.quantity-badge {
+    background: rgba(0, 255, 136, 0.15);
+    color: #00ff88;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 700;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+/* Sección de resumen */
+.cart-summary {
+    background: rgba(25, 25, 30, 0.8);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 0, 0.2);
+    align-self: flex-start;
+    position: sticky;
+    top: 1rem;
+}
+
+.cart-summary h3 {
+    color: #ffff00;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(255, 255, 0, 0.3);
+}
+
+/* Detalles del resumen */
+.summary-details {
+    margin-bottom: 1.5rem;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #d0d0d0;
+}
+
+.summary-row span:last-child {
+    color: #ffff00;
+    font-weight: 600;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #ffff00;
+    border-top: 2px solid rgba(255, 255, 0, 0.3);
+    margin-top: 0.5rem;
+}
+
+/* Botones del carrito */
+.cart-btn {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.cart-btn.vaciar {
+    background: rgba(255, 71, 87, 0.1);
+    color: #ff4757;
+    border: 1px solid rgba(255, 71, 87, 0.3);
+}
+
+.cart-btn.vaciar:hover {
+    background: rgba(255, 71, 87, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
+}
+
+.cart-btn.comprar {
+    background: linear-gradient(135deg, #ffff00 0%, #ffcc00 100%);
+    color: #0a0a0f;
+    border: none;
+}
+
+.cart-btn.comprar:hover {
+    background: linear-gradient(135deg, #ffcc00 0%, #ffaa00 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 255, 0, 0.4);
+}
+
+.cart-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Formulario de checkout */
+.checkout-form {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.checkout-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.checkout-form label {
+    display: block;
+    color: #00ff88;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.checkout-form .form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(30, 30, 35, 0.95);
+    border: 1px solid rgba(0, 255, 136, 0.4);
+    border-radius: 8px;
+    color: #f0f0f0;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.checkout-form .form-input:focus {
+    outline: none;
+    border-color: #00ff88;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+    background: rgba(40, 40, 45, 0.95);
+}
+
+/* Mensaje de carrito vacío */
+.empty-cart-message {
+    text-align: center;
+    padding: 40px;
+    color: #8c9db5;
+}
+
+.empty-cart-message p {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+/* Botón ver detalle (para carrito vacío) */
+.btn-ver-detalle {
+    background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+    color: #0a0a0f;
+    border: none;
+    padding: 0.875rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 14px;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-ver-detalle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 0, 0.3), transparent);
+    transition: 0.5s;
+}
+
+.btn-ver-detalle:hover::before {
+    left: 100%;
+}
+
+.btn-ver-detalle:hover {
+    background: linear-gradient(135deg, #00cc66 0%, #00aa55 100%);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 5px 20px rgba(0, 255, 136, 0.6),
+        0 0 15px rgba(0, 255, 136, 0.3);
+}
+
+/* ==================================
    RESPONSIVE DESIGN
    ================================== */
 @media (max-width: 1024px) {
@@ -1581,6 +1917,33 @@ table td,
         min-width: 150px;
         z-index: 1001;
     }
+    
+    /* Responsive para carrito */
+    .cart-super-container {
+        padding: 1.5rem;
+        width: 95%;
+    }
+    
+    .cart-super-container h1 {
+        font-size: 2rem;
+    }
+    
+    .cart-table th,
+    .cart-table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .cart-item-image,
+    .game-placeholder {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .cart-btn {
+        padding: 0.875rem;
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1644,6 +2007,25 @@ table td,
     
     .feature-card {
         padding: 1.5rem;
+    }
+    
+    /* Responsive para carrito */
+    .cart-main {
+        gap: 1.5rem;
+    }
+    
+    .cart-items,
+    .cart-summary {
+        padding: 1rem;
+    }
+    
+    .cart-table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .summary-total {
+        font-size: 1.2rem;
     }
 }
 

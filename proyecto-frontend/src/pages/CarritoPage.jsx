@@ -139,7 +139,9 @@ function CarritoPage() {
   if (loading) {
     return (
       <main className="cart-outer">
-        <p style={{ color: '#dcdde1', textAlign: 'center', padding: '40px' }}>Cargando carrito...</p>
+        <div className="loading-message">
+          <p>Cargando carrito...</p>
+        </div>
       </main>
     );
   }
@@ -151,10 +153,10 @@ function CarritoPage() {
         <div className="cart-main">
           <div className="cart-items">
             {cart.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '40px', color: '#8c9db5' }}>
-                <p style={{ fontSize: '18px', marginBottom: '15px' }}>Tu carrito está vacío</p>
+              <div className="empty-cart-message">
+                <p>Tu carrito está vacío</p>
                 <button 
-                  onClick={() => navigate('/juegos')}
+                  onClick={() => navigate('/catalogo')}
                   className="btn-ver-detalle"
                 >
                   🎮 Ver Juegos
@@ -180,7 +182,7 @@ function CarritoPage() {
                       return (
                         <tr key={item._id}>
                           <td>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                            <div className="cart-item-info">
                               {juego.imagen ? (
                                 <img 
                                   src={juego.imagen} 
@@ -192,7 +194,7 @@ function CarritoPage() {
                                   🎮
                                 </div>
                               )}
-                              <div>
+                              <div className="cart-item-details">
                                 <strong>{juego.titulo || 'Juego'}</strong>
                                 {juego.plataforma && (
                                   <div className="game-platform">
