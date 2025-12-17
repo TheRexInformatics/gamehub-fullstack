@@ -10,81 +10,133 @@ function PaymentResultPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const successToken = searchParams.get('token_ws');
-    const failureToken = searchParams.get('TBK_TOKEN');
+    const token = searchParams.get('token_ws');
+    const tbkToken = searchParams.get('TBK_TOKEN');
     
-    if (failureToken) {
-      setError('El pago fue cancelado por el usuario.');
+    console.log('🔍 Parámetros de pago:', { token, tbkToken });
+    
+    if (tbkToken) {
+      setError('El pago fue cancelado por el usuario');
       setLoading(false);
       return;
     }
-
-    if (successToken) {
-      const commitPayment = async (token) => {
-        try {
-          const res = await fetch(`${API_URL}/api/payments/commit`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ token })
-          });
-          
-          if (!res.ok) {
-            const errorData = await res.json();
-            throw new Error(errorData.error || 'Error al confirmar pago');
-          }
-          
-          const data = await res.json();
-          setResult(data);
-        } catch (err) {
-          setError(err.message || 'Error al confirmar el pago');
-        } finally {
-          setLoading(false);
-        }
-      };
-      commitPayment(successToken);
-      return;
-    }
     
-    setError('No se encontró un token de pago válido.');
-    setLoading(false);
+    if (token) {
+      confirmPayment(token);
+    } else {
+      setError('No se recibió token de transacción');
+      setLoading(false);
+    }
   }, [searchParams]);
 
-  const getPaymentDetails = () => {
-    if (!result) return null;
-
-    const isSuccess = result.responseCode === 0;
-    
-    return (
-      <div className={`payment-result ${isSuccess ? 'success' : 'failure'}`}>
-        <h2>{isSuccess ? '🎉 ¡Pago Exitoso!' : '❌ Pago Fallido'}</h2>
-        <p><strong>Orden de Compra:</strong> {result.buyOrder}</p>
-        <p><strong>Monto:</strong> ${result.amount?.toLocaleString('es-CL')}</p>
-        <p><strong>Fecha:</strong> {new Date(result.transactionDate).toLocaleString('es-CL')}</p>
-        <p><strong>Estado:</strong> {result.status}</p>
-        {!isSuccess && result.responseDescription && (
-          <p><strong>Descripción:</strong> {result.responseDescription}</p>
-        )}
-      </div>
-    );
+  const confirmPayment = async (token) => {
+    try {
+      const res = await fetch(`${API_URL}/api/payments/commit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+      });
+      
+      const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.error || 'Error al confirmar pago');
+      }
+      
+      setResult(data);
+      
+    } catch (err) {
+      setError(err.message || 'Error al procesar el pago');
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const formatPrice = (amount) => {
+    return new Intl.NumberFormat('es-CL', {
+      style: 'currency',
+      currency: 'CLP',
+      minimumFractionDigits: 0
+    }).format(amount || 0);
+  };
+
+  if (loading) {
+    return (
+      <main className="cart-outer">
+        <div className="cart-super-container">
+          <h1>🔄 Procesando Pago...</h1>
+          <p>Por favor, espera mientras confirmamos tu transacción.</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="cart-outer">
       <div className="cart-super-container">
-        <h1>🎮 Resultado del Pago</h1>
-        <div className="cart-main">
-          {loading && <p>Confirmando tu pago...</p>}
-          {error && <p className="error-message">⚠️ {error}</p>}
-          {result && getPaymentDetails()}
-          
+        <h1>{result?.success ? '✅ Pago Exitoso' : '❌ Pago Fallido'}</h1>
+        
+        {error && (
+          <div className="error-message">
+            <p>{error}</p>
+          </div>
+        )}
+        
+        {result && (
+          <div className={`payment-result ${result.success ? 'success' : 'failure'}`}>
+            <div className="summary-details">
+              <div className="summary-row">
+                <span>Orden de Compra:</span>
+                <span>{result.buy_order || 'N/A'}</span>
+              </div>
+              
+              <div className="summary-row">
+                <span>Monto:</span>
+                <span>{formatPrice(result.amount)}</span>
+              </div>
+              
+              <div className="summary-row">
+                <span>Código de Autorización:</span>
+                <span>{result.authorization_code || 'N/A'}</span>
+              </div>
+              
+              <div className="summary-row">
+                <span>Fecha:</span>
+                <span>{result.transaction_date ? 
+                  new Date(result.transaction_date).toLocaleString('es-CL') : 'N/A'}</span>
+              </div>
+              
+              <div className="summary-row">
+                <span>Estado:</span>
+                <span className={`status-badge ${result.success ? 'badge-active' : 'badge-inactive'}`}>
+                  {result.success ? 'APROBADO' : 'RECHAZADO'}
+                </span>
+              </div>
+              
+              {result.response_description && (
+                <div className="summary-row">
+                  <span>Descripción:</span>
+                  <span>{result.response_description}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+        
+        <div style={{ textAlign: 'center', marginTop: '30px' }}>
           <button 
+            onClick={() => navigate('/home')}
             className="btn-ver-detalle"
-            onClick={() => navigate('/home')} 
-            style={{marginTop: '20px'}}
           >
             Volver al Inicio
+          </button>
+          
+          <button 
+            onClick={() => navigate('/catalogo')}
+            className="btn-ver-detalle"
+            style={{ marginLeft: '10px', background: 'rgba(0,255,136,0.1)', color: '#00ff88' }}
+          >
+            Seguir Comprando
           </button>
         </div>
       </div>

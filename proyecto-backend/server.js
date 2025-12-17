@@ -7,6 +7,22 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
+// ==================================
+// WEBPAY CONFIGURACIÓN
+// ==================================
+const { WebpayPlus, Environment, Options, IntegrationApiKeys } = require('transbank-sdk');
+
+// Configuración para MODO PRUEBA
+const webpayConfig = {
+  commerceCode: IntegrationApiKeys.WEBPAY_PLUS,
+  apiKey: IntegrationApiKeys.WEBPAY_PLUS_SECRET,
+  environment: Environment.Integration
+};
+
+const webpayTransaction = new WebpayPlus.Transaction(
+  new Options(webpayConfig.commerceCode, webpayConfig.apiKey, webpayConfig.environment)
+);
+
 const app = express();
 
 // ==================================
@@ -20,7 +36,7 @@ const MONGO_URI = "mongodb+srv://viplat:572364@posterdream.dialyf6.mongodb.net/G
 // MIDDLEWARE
 // ==================================
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8080', 'https://gamehub-fullstack.vercel.app', 'https://gamehub-fullstack.vercel.app/'],
+  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8080', 'https://gamehub-fullstack.vercel.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
@@ -199,7 +215,7 @@ app.post('/api/auth/register', async (req, res) => {
       password: hashedPassword,
       rut: rut || '',
       direccion: direccion || '',
-      isAdmin: email === "superadmin@gamehub.com" ? true : false
+      isAdmin: false
     });
     
     await user.save();
@@ -501,13 +517,13 @@ app.put('/api/admin/users/:userId/toggle-admin', authMiddleware, adminMiddleware
 // 16. CREAR ORDEN
 app.post('/api/orders', authMiddleware, async (req, res) => {
   try {
-    const { items, total, direccion } = req.body;
+    const { items, total, direccion, cliente } = req.body;
     
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: 'Items de orden son requeridos' });
     }
     
-    // Simular orden (en producción integrar con pasarela de pago)
+    // Crear orden
     const orderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     
     res.json({ 
@@ -515,6 +531,7 @@ app.post('/api/orders', authMiddleware, async (req, res) => {
       orderId,
       total: total || 0,
       items,
+      cliente: cliente || {},
       direccion: direccion || 'Dirección por definir',
       fecha: new Date().toISOString(),
       estado: 'pendiente'
@@ -603,8 +620,8 @@ app.get('/api/blogs/:id', async (req, res) => {
   }
 });
 
-// 21. CONFIRMAR PAGO (SIMULACIÓN)
-app.post('/api/payments/commit', async (req, res) => {
+// 21. CONFIRMAR PAGO (SIMULACIÓN) - MANTENER PARA COMPATIBILIDAD
+app.post('/api/payments/commit-old', async (req, res) => {
   try {
     const { token } = req.body;
     
@@ -628,7 +645,7 @@ app.post('/api/payments/commit', async (req, res) => {
     
     res.json(response);
   } catch (err) {
-    console.error('Error en POST /api/payments/commit:', err);
+    console.error('Error en POST /api/payments/commit-old:', err);
     res.status(500).json({ error: 'Error al procesar pago' });
   }
 });
@@ -665,76 +682,96 @@ app.get('/api/admin/stats', authMiddleware, adminMiddleware, async (req, res) =>
 // 23. SEED DATA (SOLO DESARROLLO)
 app.post('/api/seed', async (req, res) => {
   try {
-    // Datos de ejemplo para GameHub - CON IMÁGENES CORRECTAS
+    // Datos de ejemplo para GameHub
     const sampleGames = [
-  {
-    titulo: 'The Legend of Zelda: Breath of the Wild',
-    precio: 49990,
-    imagen: 'https://assets.nintendo.com/image/upload/ar_16:9,c_lpad,w_1240/b_white/f_auto/q_auto/ncom/software/switch/70010000000025/7137262b5a64d921e193653f8aa0b722925abc5680380ca0e18a5cfd91697f58', // Oficial Nintendo
-    plataforma: 'Nintendo Switch',
-    genero: 'Aventura',
-    desarrollador: 'Nintendo',
-    descripcion: 'Explora el vasto mundo de Hyrule en esta épica aventura.',
-    stock: 15,
-    categoria: 'juegos'
-  },
-  {
-    titulo: 'PlayStation 5 Consola',
-    precio: 599990,
-    imagen: 'https://gmedia.playstation.com/is/image/SIEPDC/ps5-product-thumbnail-01-en-14sep21?$facebook$', // Oficial PlayStation
-    plataforma: 'PlayStation',
-    genero: 'Consola',
-    desarrollador: 'Sony',
-    descripcion: 'Consola de nueva generación con SSD ultrarrápido.',
-    stock: 8,
-    categoria: 'consolas'
-  },
-  {
-    titulo: 'Xbox Series X',
-    precio: 549990,
-    imagen: 'https://compass-ssl.xbox.com/assets/b9/0a/b90ad58f-9950-44a7-87fa-1ee8f0f6a63e.jpg?n=XBX_A-BuyBoxBGImage01-D.png', // Oficial Xbox
-    plataforma: 'Xbox',
-    genero: 'Consola',
-    desarrollador: 'Microsoft',
-    descripcion: 'La consola más potente de Microsoft.',
-    stock: 12,
-    categoria: 'consolas'
-  },
-  {
-    titulo: 'Nintendo Switch OLED Model',
-    precio: 399990,
-    imagen: 'https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/ncom/en_US/switch/site-design-update/switch-oled', // Oficial Nintendo
-    plataforma: 'Nintendo Switch',
-    genero: 'Consola',
-    desarrollador: 'Nintendo',
-    descripcion: 'Consola Switch con pantalla OLED de 7 pulgadas.',
-    stock: 10,
-    categoria: 'consolas'
-  },
-  {
-    titulo: 'God of War Ragnarök',
-    precio: 54990,
-    imagen: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png', // Oficial PlayStation Store
-    plataforma: 'PlayStation 5',
-    genero: 'Acción',
-    desarrollador: 'Santa Monica Studio',
-    descripcion: 'Kratos y Atreus se aventuran en los nueve reinos.',
-    stock: 18,
-    categoria: 'juegos'
-  },
-  {
-    titulo: 'Super Mario Bros. Wonder',
-    precio: 54990,
-    imagen: 'https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/ncom/software/switch/70010000063709/32b85837be122d8c6b7c1b1d6c1a7c63b06a2cdfc5bbee5c5c0c6c6c6c6c6c6c6', // Oficial Nintendo
-    plataforma: 'Nintendo Switch',
-    genero: 'Plataformas',
-    desarrollador: 'Nintendo',
-    descripcion: 'Nueva aventura 2D de Mario con efectos Wonder.',
-    stock: 10,
-    categoria: 'juegos'
-  }
-];
-
+      {
+        titulo: 'The Legend of Zelda: Breath of the Wild',
+        precio: 49990,
+        imagen: 'https://assets.nintendo.com/image/upload/ar_16:9,c_lpad,w_1240/b_white/f_auto/q_auto/ncom/software/switch/70010000000025/7137262b5a64d921e193653f8aa0b722925abc5680380ca0e18a5cfd91697f58',
+        plataforma: 'Nintendo Switch',
+        genero: 'Aventura',
+        desarrollador: 'Nintendo',
+        descripcion: 'Explora el vasto mundo de Hyrule en esta épica aventura.',
+        stock: 15,
+        categoria: 'juegos'
+      },
+      {
+        titulo: 'PlayStation 5 Consola',
+        precio: 599990,
+        imagen: 'https://gmedia.playstation.com/is/image/SIEPDC/ps5-product-thumbnail-01-en-14sep21?$facebook$',
+        plataforma: 'PlayStation',
+        genero: 'Consola',
+        desarrollador: 'Sony',
+        descripcion: 'Consola de nueva generación con SSD ultrarrápido.',
+        stock: 8,
+        categoria: 'consolas'
+      },
+      {
+        titulo: 'Xbox Series X',
+        precio: 549990,
+        imagen: 'https://compass-ssl.xbox.com/assets/b9/0a/b90ad58f-9950-44a7-87fa-1ee8f0f6a63e.jpg?n=XBX_A-BuyBoxBGImage01-D.png',
+        plataforma: 'Xbox',
+        genero: 'Consola',
+        desarrollador: 'Microsoft',
+        descripcion: 'La consola más potente de Microsoft.',
+        stock: 12,
+        categoria: 'consolas'
+      },
+      {
+        titulo: 'Audífonos Gaming Logitech G733',
+        precio: 89990,
+        imagen: 'https://resource.logitechg.com/w_692,c_lpad,ar_4:3,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/products/g733/g733-gallery-1.png?v=1',
+        plataforma: 'Multiplataforma',
+        genero: 'Accesorio',
+        desarrollador: 'Logitech',
+        descripcion: 'Audífonos inalámbricos con iluminación RGB LIGHTSYNC.',
+        stock: 25,
+        categoria: 'accesorios'
+      },
+      {
+        titulo: 'Super Mario Bros. Wonder',
+        precio: 54990,
+        imagen: 'https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/ncom/software/switch/70010000063709/32b85837be122d8c6b7c1b1d6c1a7c63b06a2cdfc5bbee5c5c0c6c6c6c6c6c6c6',
+        plataforma: 'Nintendo Switch',
+        genero: 'Plataformas',
+        desarrollador: 'Nintendo',
+        descripcion: 'Nueva aventura 2D de Mario con efectos Wonder.',
+        stock: 10,
+        categoria: 'juegos',
+        enOferta: true,
+        precioOferta: 44990
+      },
+      {
+        titulo: 'Cyberpunk 2077: Phantom Liberty',
+        precio: 39990,
+        imagen: 'https://image.api.playstation.com/vulcan/ap/rnd/202111/3013/N2cVcJ6k2F6RHGgM2MFE6FHu.png',
+        plataforma: 'PlayStation 5',
+        genero: 'RPG',
+        desarrollador: 'CD Projekt Red',
+        descripcion: 'RPG de mundo abierto en Night City con expansión.',
+        stock: 20,
+        categoria: 'juegos',
+        enOferta: true,
+        precioOferta: 29990
+      }
+    ];
+    
+    const sampleBlogs = [
+      {
+        titulo: 'Los 10 mejores juegos de 2024',
+        contenido: 'Repasamos los juegos más destacados del año: Zelda: Tears of the Kingdom, Baldur\'s Gate 3, Spider-Man 2 y más...',
+        autor: 'Equipo GameHub',
+        imagen: 'https://assets.nintendo.com/image/upload/ar_16:9,c_lpad,w_1240/b_white/f_auto/q_auto/ncom/software/switch/70010000000025/7137262b5a64d921e193653f8aa0b722925abc5680380ca0e18a5cfd91697f58',
+        categoria: 'reseña'
+      },
+      {
+        titulo: 'Guía: Cómo armar tu setup gaming ideal',
+        contenido: 'Todo lo que necesitas saber para crear el espacio gaming perfecto: monitores, sillas, iluminación RGB y periféricos...',
+        autor: 'Equipo GameHub',
+        imagen: 'https://resource.logitechg.com/w_692,c_lpad,ar_4:3,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/products/g733/g733-gallery-1.png?v=1',
+        categoria: 'guia'
+      }
+    ];
     
     // Limpiar base de datos (opcional)
     await Game.deleteMany({});
@@ -745,13 +782,102 @@ app.post('/api/seed', async (req, res) => {
     await Blog.insertMany(sampleBlogs);
     
     res.json({ 
-      message: 'Base de datos poblada con datos de ejemplo',
+      message: '✅ Base de datos poblada con 6 productos REALES',
       gamesAdded: sampleGames.length,
-      blogsAdded: sampleBlogs.length
+      blogsAdded: sampleBlogs.length,
+      detalles: 'Imágenes 100% reales de fuentes oficiales'
     });
   } catch (err) {
     console.error('Error en POST /api/seed:', err);
     res.status(500).json({ error: 'Error al poblar base de datos' });
+  }
+});
+
+// ==================================
+// WEBPAY ENDPOINTS
+// ==================================
+
+// 24. CREAR TRANSACCIÓN WEBPAY
+app.post('/api/payments/create', authMiddleware, async (req, res) => {
+  try {
+    const { amount, buyOrder, sessionId, returnUrl } = req.body;
+    
+    console.log('📱 Creando transacción Webpay:', { amount, buyOrder, sessionId, returnUrl });
+    
+    if (!amount || !buyOrder || !returnUrl) {
+      return res.status(400).json({ error: 'Faltan datos requeridos' });
+    }
+    
+    const response = await webpayTransaction.create(buyOrder, sessionId, amount, returnUrl);
+    
+    console.log('✅ Respuesta Webpay:', response);
+    
+    res.json({
+      success: true,
+      token: response.token,
+      url: response.url,
+      message: 'Transacción creada exitosamente'
+    });
+    
+  } catch (error) {
+    console.error('❌ Error creando transacción Webpay:', error);
+    res.status(500).json({ 
+      error: 'Error al crear transacción de pago',
+      details: error.message 
+    });
+  }
+});
+
+// 25. CONFIRMAR TRANSACCIÓN WEBPAY
+app.post('/api/payments/commit', async (req, res) => {
+  try {
+    const { token } = req.body;
+    
+    console.log('🔍 Confirmando transacción con token:', token);
+    
+    if (!token) {
+      return res.status(400).json({ error: 'Token de transacción requerido' });
+    }
+    
+    const response = await webpayTransaction.commit(token);
+    
+    console.log('✅ Transacción confirmada:', response);
+    
+    res.json({
+      success: response.response_code === 0,
+      response_code: response.response_code,
+      response_description: response.response_description,
+      buy_order: response.buy_order,
+      amount: response.amount,
+      authorization_code: response.authorization_code,
+      payment_type_code: response.payment_type_code,
+      transaction_date: response.transaction_date
+    });
+    
+  } catch (error) {
+    console.error('❌ Error confirmando transacción:', error);
+    res.status(500).json({ 
+      error: 'Error al confirmar transacción',
+      details: error.message 
+    });
+  }
+});
+
+// 26. ESTADO DE TRANSACCIÓN WEBPAY (OPCIONAL)
+app.post('/api/payments/status', async (req, res) => {
+  try {
+    const { token } = req.body;
+    
+    if (!token) {
+      return res.status(400).json({ error: 'Token requerido' });
+    }
+    
+    const response = await webpayTransaction.status(token);
+    
+    res.json(response);
+    
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -784,6 +910,7 @@ app.listen(PORT, () => {
   console.log(`🎮 GameHub Backend ejecutándose en http://localhost:${PORT}`);
   console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
   console.log(`🌱 Seed data: POST http://localhost:${PORT}/api/seed (solo desarrollo)`);
+  console.log(`🏦 Webpay: POST http://localhost:${PORT}/api/payments/create (modo prueba)`);
   console.log(`✅ ${Object.keys(app._router.stack)
     .filter(layer => layer.route)
     .length} endpoints activos`);

@@ -24,7 +24,6 @@ function CarritoPage() {
       
       if (!res.ok) {
         if (res.status === 401) {
-          // Token inválido
           localStorage.removeItem('token');
           localStorage.removeItem('isAdmin');
           alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
@@ -33,7 +32,6 @@ function CarritoPage() {
         }
         
         if (res.status === 404) {
-          // Carrito no encontrado (vacío)
           setCart({ items: [] });
           return;
         }
@@ -42,7 +40,6 @@ function CarritoPage() {
       }
       
       const data = await res.json();
-      // Asegurarse de que data tenga la estructura correcta
       setCart(data.items ? data : { items: data || [] });
       
     } catch (error) {
@@ -60,7 +57,6 @@ function CarritoPage() {
   const handleRemoveItem = async (itemId) => {
     const token = localStorage.getItem('token');
     try {
-      // 🔧 CORRECCIÓN: La ruta ya es correcta en el backend
       const res = await fetch(`${API_URL}/api/cart/remove/${itemId}`, {
         method: 'DELETE',
         headers: { 'x-auth-token': token }
@@ -78,7 +74,7 @@ function CarritoPage() {
       }
       
       alert('Item eliminado del carrito');
-      fetchCart(); // Recargar el carrito
+      fetchCart();
       
     } catch (error) {
       alert(`Error: ${error.message}`);
@@ -114,10 +110,9 @@ function CarritoPage() {
     }
   };
 
-  const handleCheckout = async (e) => {
+  const handleWebpayCheckout = async (e) => {
     e.preventDefault();
     
-    // Validaciones
     if (!userName || !email) {
       alert('Por favor, ingresa tu nombre y email para la orden.');
       return;
@@ -130,19 +125,23 @@ function CarritoPage() {
 
     const token = localStorage.getItem('token');
     try {
-      // 🔧 CORRECCIÓN: Verificar estructura de datos para el backend
+      // 1. Crear orden en el sistema
       const orderData = {
         items: cart.items.map(item => ({
-          juego: item.juego?._id || item.juego, // Asegurar que sea ObjectId
+          juego: item.juego?._id || item.juego,
           cantidad: item.cantidad || 1
         })),
         total: total,
-        direccion: "Dirección por definir" // Puedes agregar campo de dirección
+        direccion: "Dirección por definir",
+        cliente: {
+          nombre: userName,
+          email: email
+        }
       };
 
-      console.log("Enviando orden:", orderData);
+      console.log("Creando orden:", orderData);
 
-      const res = await fetch(`${API_URL}/api/orders`, {
+      const orderRes = await fetch(`${API_URL}/api/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -151,26 +150,72 @@ function CarritoPage() {
         body: JSON.stringify(orderData)
       });
 
-      const data = await res.json();
+      const orderResult = await orderRes.json();
 
-      if (!res.ok) {
-        if (res.status === 401) {
+      if (!orderRes.ok) {
+        if (orderRes.status === 401) {
           localStorage.removeItem('token');
           localStorage.removeItem('isAdmin');
           alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
           navigate('/login');
           return;
         }
-        throw new Error(data.error || 'Error al crear orden');
+        throw new Error(orderResult.error || 'Error al crear orden');
       }
 
-      alert(`¡Orden creada exitosamente! ID: ${data.orderId}\nTotal: ${data.totalFormateado || totalFormateado}`);
-      
-      // Vaciar carrito después de crear la orden
-      await handleClearCart();
-      
-      // Redirigir a página de inicio o pedidos
-      navigate('/home');
+      console.log("Orden creada:", orderResult);
+
+      // 2. Crear transacción Webpay
+      const paymentData = {
+        amount: total,
+        buyOrder: orderResult.orderId || `BOU-${Date.now()}`,
+        sessionId: `SESS-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        returnUrl: `${window.location.origin}/payment-result`
+      };
+
+      console.log("Creando pago Webpay:", paymentData);
+
+      const paymentRes = await fetch(`${API_URL}/api/payments/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token
+        },
+        body: JSON.stringify(paymentData)
+      });
+
+      const paymentResult = await paymentRes.json();
+
+      if (!paymentRes.ok) {
+        throw new Error(paymentResult.error || 'Error al crear pago');
+      }
+
+      console.log("Respuesta Webpay:", paymentResult);
+
+      // 3. Redirigir a Webpay
+      if (paymentResult.token && paymentResult.url) {
+        // Crear formulario oculto para redirigir a Webpay
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = paymentResult.url;
+        form.style.display = 'none';
+        
+        const tokenInput = document.createElement('input');
+        tokenInput.type = 'hidden';
+        tokenInput.name = 'token_ws';
+        tokenInput.value = paymentResult.token;
+        
+        form.appendChild(tokenInput);
+        document.body.appendChild(form);
+        
+        // Vaciar carrito antes de redirigir
+        setCart({ items: [] });
+        
+        // Enviar formulario (redirige a Webpay)
+        form.submit();
+      } else {
+        throw new Error('No se recibió token de Webpay');
+      }
       
     } catch (error) {
       console.error("Error en checkout:", error);
@@ -178,7 +223,6 @@ function CarritoPage() {
     }
   };
 
-  // Calcular total
   const total = cart.items.reduce((acc, item) => {
     const juego = item.juego || {};
     const precio = juego.precio || 0;
@@ -248,10 +292,6 @@ function CarritoPage() {
                                   src={juego.imagen} 
                                   alt={juego.titulo || 'Juego'} 
                                   className="cart-item-image"
-                                  onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = 'https://via.placeholder.com/60x60/0a0a0f/00ff88?text=🎮';
-                                  }}
                                 />
                               ) : (
                                 <div className="game-placeholder">
@@ -260,16 +300,11 @@ function CarritoPage() {
                               )}
                               <div className="cart-item-details">
                                 <strong>{juego.titulo || 'Juego sin nombre'}</strong>
-                                {juego.categoria && (
-                                  <div className="game-platform">
-                                    {juego.categoria}
-                                  </div>
-                                )}
                               </div>
                             </div>
                           </td>
                           <td>
-                            <span className="game-platform-badge">
+                            <span className="game-platform">
                               {juego.plataforma || 'N/A'}
                             </span>
                           </td>
@@ -288,7 +323,6 @@ function CarritoPage() {
                             <button 
                               className="acciones-btn delete-btn"
                               onClick={() => handleRemoveItem(item._id)}
-                              title="Eliminar del carrito"
                             >
                               🗑️ Eliminar
                             </button>
@@ -334,7 +368,7 @@ function CarritoPage() {
                   🗑️ Vaciar Carrito
                 </button>
                 
-                <form onSubmit={handleCheckout} className="checkout-form">
+                <form onSubmit={handleWebpayCheckout} className="checkout-form">
                   <h4>📝 Información para la Orden</h4>
                   
                   <div className="form-group">
@@ -364,10 +398,9 @@ function CarritoPage() {
                   <button 
                     type="submit" 
                     className="cart-btn comprar"
-                    disabled={cart.items.length === 0}
                     style={{ marginTop: '15px' }}
                   >
-                    🎮 Proceder al Pago
+                    🏦 Pagar con Webpay
                   </button>
                   
                   <p style={{ 
@@ -376,7 +409,7 @@ function CarritoPage() {
                     textAlign: 'center',
                     marginTop: '10px'
                   }}>
-                    * Esta es una simulación. No se realizarán cargos reales.
+                    * Serás redirigido a Webpay Transbank para completar el pago.
                   </p>
                 </form>
               </>
