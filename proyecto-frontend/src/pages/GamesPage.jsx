@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom'; // NUEVO: para leer parámetros
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { API_URL } from '../config';
 import GameCard from '../components/GameCard';
 
 function GamesPage() {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchParams] = useSearchParams(); // NUEVO
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   
   // Obtener parámetros de la URL
   const categoria = searchParams.get('categoria');
@@ -27,16 +28,23 @@ function GamesPage() {
     }
     
     fetch(url)
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+        return response.json();
+      })
       .then(data => {
+        console.log("Datos recibidos del backend:", data);
         setGames(data);
         setLoading(false);
       })
       .catch(error => {
         console.error("Error al cargar juegos:", error);
+        setGames([]);
         setLoading(false);
       });
-  }, [categoria, oferta, plataforma]); // Se ejecuta cuando cambian los parámetros
+  }, [categoria, oferta, plataforma]);
 
   // Título dinámico basado en filtros
   const getPageTitle = () => {
@@ -57,6 +65,11 @@ function GamesPage() {
     return 'Descubre el catálogo completo de GameHub';
   };
 
+  // Función para navegar a categorías
+  const navigateToCategory = (categoryParam) => {
+    navigate(`/catalogo${categoryParam}`);
+  };
+
   return (
     <main>
       <section className="productos-hero">
@@ -67,26 +80,53 @@ function GamesPage() {
       {/* Filtros opcionales - solo si no hay categoría específica */}
       {!categoria && !oferta && (
         <div className="filtros-categorias">
-          <button className="filtro-btn" onClick={() => window.location.href = '/catalogo?categoria=juegos'}>
+          <button 
+            className="filtro-btn" 
+            onClick={() => navigateToCategory('?categoria=juegos')}
+          >
             🎮 Juegos
           </button>
-          <button className="filtro-btn" onClick={() => window.location.href = '/catalogo?categoria=consolas'}>
+          <button 
+            className="filtro-btn" 
+            onClick={() => navigateToCategory('?categoria=consolas')}
+          >
             🕹️ Consolas
           </button>
-          <button className="filtro-btn" onClick={() => window.location.href = '/catalogo?categoria=accesorios'}>
+          <button 
+            className="filtro-btn" 
+            onClick={() => navigateToCategory('?categoria=accesorios')}
+          >
             🎧 Accesorios
           </button>
-          <button className="filtro-btn" onClick={() => window.location.href = '/catalogo?categoria=retro'}>
+          <button 
+            className="filtro-btn" 
+            onClick={() => navigateToCategory('?categoria=retro')}
+          >
             🕰️ Retro
           </button>
-          <button className="filtro-btn" onClick={() => window.location.href = '/catalogo?oferta=true'}>
+          <button 
+            className="filtro-btn ofertas-btn" 
+            onClick={() => navigateToCategory('?oferta=true')}
+          >
             🔥 Ofertas
           </button>
         </div>
       )}
 
       {loading ? (
-        <p style={{textAlign: 'center', color: '#dcdde1', padding: '40px'}}>Cargando productos...</p>
+        <div className="loading-message">
+          <p>Cargando productos...</p>
+        </div>
+      ) : games.length === 0 ? (
+        <div className="no-products-message">
+          <p>No se encontraron productos</p>
+          <button 
+            onClick={() => navigate('/catalogo')}
+            className="btn-ver-todos"
+          >
+            Ver todos los productos
+          </button>
+        </div>
       ) : (
         <div className="productos-grid">
           {games.map(game => (

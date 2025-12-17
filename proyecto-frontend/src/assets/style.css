@@ -494,7 +494,97 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
 }
 
 /* ==================================
-   GAME CARDS NEON
+   FILTROS DE CATEGORÍAS
+   ================================== */
+.filtros-categorias {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 2rem 0;
+    padding: 0 1rem;
+}
+
+.filtro-btn {
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid #00ff88;
+    color: #00ff88;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.filtro-btn:hover {
+    background: rgba(0, 255, 136, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+}
+
+.filtro-btn.ofertas-btn {
+    background: rgba(255, 255, 0, 0.1);
+    border: 1px solid #ffff00;
+    color: #ffff00;
+}
+
+.filtro-btn.ofertas-btn:hover {
+    background: rgba(255, 255, 0, 0.2);
+    box-shadow: 0 5px 15px rgba(255, 255, 0, 0.3);
+}
+
+/* ==================================
+   MENSAJES DE CARGA Y SIN PRODUCTOS
+   ================================== */
+.loading-message,
+.no-products-message {
+    text-align: center;
+    color: #dcdde1;
+    padding: 60px 20px;
+    background: rgba(20, 20, 25, 0.7);
+    border-radius: 15px;
+    margin: 2rem auto;
+    max-width: 500px;
+    border: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.no-products-message {
+    border: 1px solid rgba(255, 71, 87, 0.2);
+}
+
+.loading-message p,
+.no-products-message p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+/* ==================================
+   BOTÓN VER TODOS
+   ================================== */
+.btn-ver-todos {
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid #00ff88;
+    color: #00ff88;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.btn-ver-todos:hover {
+    background: rgba(0, 255, 136, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+}
+
+/* ==================================
+   PRODUCTOS GRID
    ================================== */
 .productos-grid {
     display: grid;
@@ -506,7 +596,10 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     width: 90%;
 }
 
-.game-card {
+/* ==================================
+   CARD DE PRODUCTO
+   ================================== */
+.producto-card {
     background: rgba(20, 20, 25, 0.9);
     backdrop-filter: blur(8px);
     border-radius: 16px;
@@ -519,9 +612,10 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     flex-direction: column;
     border: 1px solid transparent;
     position: relative;
+    height: 100%;
 }
 
-.game-card:hover {
+.producto-card:hover {
     transform: translateY(-10px) scale(1.02);
     box-shadow: 
         0 15px 35px rgba(0, 255, 136, 0.4),
@@ -530,7 +624,7 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     border-color: #00ff88;
 }
 
-.game-cover {
+.producto-imagen {
     width: 100%;
     height: 200px;
     background-size: cover;
@@ -539,7 +633,7 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     overflow: hidden;
 }
 
-.game-cover::after {
+.producto-imagen::after {
     content: '';
     position: absolute;
     top: 0;
@@ -549,30 +643,7 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     background: linear-gradient(to bottom, transparent 60%, rgba(10, 10, 15, 0.9));
 }
 
-.platform-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
-    color: #0a0a0f;
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 10px;
-    font-weight: bold;
-    text-transform: uppercase;
-    z-index: 2;
-    box-shadow: 0 2px 8px rgba(0, 255, 136, 0.4);
-}
-
-.game-info {
-    padding: 1.5rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.game-titulo {
+.producto-card h3 {
     color: #ffff00;
     margin-bottom: 0.5rem;
     font-size: 1.25rem;
@@ -582,32 +653,10 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     text-shadow: 
         0 0 10px rgba(255, 255, 0, 0.5),
         0 0 20px rgba(255, 255, 0, 0.2);
+    padding: 1rem 1rem 0 1rem;
 }
 
-.game-meta {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-    font-size: 12px;
-}
-
-.genre {
-    color: #00ff88;
-    background: rgba(0, 255, 136, 0.15);
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-weight: 600;
-}
-
-.rating {
-    color: #ffff00;
-    background: rgba(255, 255, 0, 0.15);
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-weight: 600;
-}
-
-.game-precio {
+.producto-card .precio {
     color: #ffff00;
     font-weight: 900;
     font-size: 1.75rem;
@@ -615,9 +664,10 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     text-shadow: 
         0 0 15px rgba(255, 255, 0, 0.6),
         0 0 30px rgba(255, 255, 0, 0.3);
+    padding: 0 1rem;
 }
 
-.btn-ver-detalle {
+.btn-agregar {
     background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
     color: #0a0a0f;
     border: none;
@@ -627,6 +677,7 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     text-align: center;
     text-decoration: none;
     margin-top: auto;
+    margin: 1rem;
     transition: all 0.3s ease;
     font-weight: 700;
     text-transform: uppercase;
@@ -637,7 +688,7 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     overflow: hidden;
 }
 
-.btn-ver-detalle::before {
+.btn-agregar::before {
     content: '';
     position: absolute;
     top: 0;
@@ -648,11 +699,11 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     transition: 0.5s;
 }
 
-.btn-ver-detalle:hover::before {
+.btn-agregar:hover::before {
     left: 100%;
 }
 
-.btn-ver-detalle:hover {
+.btn-agregar:hover {
     background: linear-gradient(135deg, #00cc66 0%, #00aa55 100%);
     transform: translateY(-2px);
     box-shadow: 
