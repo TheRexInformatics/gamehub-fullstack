@@ -175,7 +175,7 @@ function CarritoPage() {
 
       console.log("Creando pago Webpay:", paymentData);
 
-      const paymentRes = await fetch(`${API_URL}/api/payments/create`, {
+      const paymentRes = await fetch(`${API_URL}/api/payments/create`, {  
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
