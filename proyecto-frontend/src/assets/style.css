@@ -1268,80 +1268,91 @@ table td,
     z-index: 2;
 }
 
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-    .productos-hero,
-    .contact-main .contact-hero,
-    .blog-main .blogs-hero {
-        width: 95%;
-        max-width: 850px;
-        padding: 4rem 1.5rem !important;
-    }
-    
-    .productos-hero h1,
-    .contact-main .contact-hero h2,
-    .blog-main .blogs-hero h1 {
-        font-size: 2.8rem !important;
-        padding: 25px 40px;
-        margin-bottom: 20px !important;
-    }
-    
-    .productos-hero p,
-    .contact-main .contact-hero p,
-    .blog-main .blogs-hero p {
-        font-size: 1.3rem;
-        padding: 20px 35px;
-    }
+/* ============================================================
+   ESTILOS ESPECÍFICOS PARA EL BLOG CON CUADRO
+   ============================================================ */
+
+/* Cuadro para la página de Blog */
+.blog-main .blogs-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5rem 2rem !important;
+    min-height: 300px;
+    width: 90%;
+    max-width: 900px;
+    margin: 3rem auto;
+    background: rgba(15, 15, 20, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    border: 3px solid rgba(0, 255, 136, 0.4);
+    box-shadow: 
+        0 25px 60px rgba(0, 0, 0, 0.9),
+        inset 0 0 80px rgba(0, 255, 136, 0.15),
+        0 0 40px rgba(0, 255, 136, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 
-@media (max-width: 768px) {
-    .productos-hero,
-    .contact-main .contact-hero,
-    .blog-main .blogs-hero {
-        padding: 3rem 1rem !important;
-        min-height: 250px;
-        margin: 2rem auto;
-    }
-    
-    .productos-hero h1,
-    .contact-main .contact-hero h2,
-    .blog-main .blogs-hero h1 {
-        font-size: 2.2rem !important;
-        padding: 20px 30px;
-        margin-bottom: 15px !important;
-    }
-    
-    .productos-hero p,
-    .contact-main .contact-hero p,
-    .blog-main .blogs-hero p {
-        font-size: 1.1rem;
-        padding: 15px 25px;
-    }
+/* Título del Blog dentro del cuadro */
+.blog-main .blogs-hero h1 {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(10, 10, 15, 0.95)) !important;
+    padding: 30px 50px;
+    border-radius: 20px;
+    border: 3px solid rgba(0, 255, 136, 0.5);
+    box-shadow: 
+        0 0 40px rgba(0, 255, 136, 0.8),
+        0 0 80px rgba(0, 255, 136, 0.4);
+    text-shadow: 
+        0 0 20px rgba(0, 255, 136, 1),
+        0 0 35px rgba(0, 255, 136, 0.7),
+        0 0 55px rgba(0, 255, 136, 0.4) !important;
+    color: #00ff88 !important;
+    font-size: 3.5rem !important;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 25px auto !important;
+    display: block;
+    line-height: 1.2;
 }
 
-@media (max-width: 480px) {
-    .productos-hero,
-    .contact-main .contact-hero,
-    .blog-main .blogs-hero {
-        padding: 2.5rem 0.75rem !important;
-        margin: 1.5rem auto;
-        width: 97%;
-    }
-    
-    .productos-hero h1,
-    .contact-main .contact-hero h2,
-    .blog-main .blogs-hero h1 {
-        font-size: 1.8rem !important;
-        padding: 15px 20px;
-        margin-bottom: 10px !important;
-    }
-    
-    .productos-hero p,
-    .contact-main .contact-hero p,
-    .blog-main .blogs-hero p {
-        font-size: 1rem;
-        padding: 12px 18px;
-    }
+/* Descripción del Blog dentro del cuadro */
+.blog-main .blogs-hero p {
+    background: rgba(0, 0, 0, 0.75);
+    padding: 25px 40px;
+    border-radius: 18px;
+    border: 2px solid rgba(255, 255, 0, 0.4);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+    font-size: 1.5rem;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto !important;
+    display: block;
+    line-height: 1.6;
+    color: #f0f0f0 !important;
+}
+
+/* Efecto de partículas dentro del cuadro del Blog */
+.blog-main .blogs-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: 
+        radial-gradient(circle at 30% 30%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(255, 255, 0, 0.1) 0%, transparent 50%);
+    animation: rotate 20s linear infinite;
+    z-index: 0;
+}
+
+/* Asegurar que el contenido del Blog esté por encima */
+.blog-main .blogs-hero > * {
+    position: relative;
+    z-index: 2;
 }
 
 /* ==================================
@@ -1386,6 +1397,29 @@ table td,
     .blog-main .blogs-hero p {
         font-size: 1.2rem;
         padding: 14px 28px;
+    }
+    
+    .productos-hero,
+    .contact-main .contact-hero,
+    .blog-main .blogs-hero {
+        width: 95%;
+        max-width: 850px;
+        padding: 4rem 1.5rem !important;
+    }
+    
+    .productos-hero h1,
+    .contact-main .contact-hero h2,
+    .blog-main .blogs-hero h1 {
+        font-size: 2.8rem !important;
+        padding: 25px 40px;
+        margin-bottom: 20px !important;
+    }
+    
+    .productos-hero p,
+    .contact-main .contact-hero p,
+    .blog-main .blogs-hero p {
+        font-size: 1.3rem;
+        padding: 20px 35px;
     }
 }
 
@@ -1455,7 +1489,8 @@ table td,
     .contact-main .contact-hero,
     .blog-main .blogs-hero {
         padding: 3rem 1.5rem !important;
-        gap: 20px !important;
+        min-height: 250px;
+        margin: 2rem auto;
     }
     
     .features {
@@ -1547,7 +1582,8 @@ table td,
     .contact-main .contact-hero,
     .blog-main .blogs-hero {
         padding: 2.5rem 0.75rem !important;
-        gap: 15px !important;
+        margin: 1.5rem auto;
+        width: 97%;
     }
     
     .features {
