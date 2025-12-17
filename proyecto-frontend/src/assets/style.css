@@ -1042,6 +1042,93 @@ tbody tr:nth-child(even):hover {
     animation: glow 2s ease-in-out infinite;
 }
 
+/* ============================================================
+   CORRECCIÓN CRÍTICA: ELIMINAR CAPA OSCURA DE PÁGINAS DE CONTENIDO
+   ============================================================ */
+
+/* 1. DESACTIVAR la capa oscura general que está en TODAS las páginas */
+main::before {
+    display: none !important;
+}
+
+/* 2. RE-ACTIVAR la capa oscura SOLO para HomePage */
+/* Detectar HomePage: cuando main tiene solo un .hero sin otros elementos */
+main:has(.hero:only-child)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 15, 0.9);
+    z-index: 0;
+    display: block !important;
+}
+
+/* 3. ASEGURAR que el contenido de todas las páginas esté POR ENCIMA */
+main:not(:has(.hero:only-child)) > *,
+.blog-main > *,
+.producto-detalle > *,
+.cart-outer > *,
+.contact-main > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* 4. CORREGIR ESPECÍFICAMENTE las secciones hero de cada página */
+main:not(:has(.hero:only-child)) .hero,
+.blog-main .blogs-hero,
+.cart-outer .cart-super-container,
+.contact-main .contact-hero,
+.producto-detalle .detalle-container {
+    position: relative !important;
+    z-index: 3 !important;
+}
+
+/* 5. ASEGURAR legibilidad en páginas específicas */
+/* Página de Contacto */
+.contact-main .contact-hero,
+.contact-main .contact-hero-content,
+.contact-main .contact-form {
+    background: rgba(20, 20, 25, 0.95) !important;
+    color: #f0f0f0 !important;
+}
+
+/* Página de Carrito */
+.cart-outer .cart-super-container,
+.cart-outer .cart-items,
+.cart-outer .cart-summary {
+    background: rgba(20, 20, 25, 0.95) !important;
+    color: #f0f0f0 !important;
+}
+
+/* Página de Blog */
+.blog-main .blogs-hero,
+.blog-main .blog-section,
+.blog-main .blog-card {
+    background: rgba(20, 20, 25, 0.95) !important;
+    color: #f0f0f0 !important;
+}
+
+/* Página de Detalle de Producto */
+.producto-detalle .detalle-container {
+    background: rgba(20, 20, 25, 0.95) !important;
+    color: #f0f0f0 !important;
+}
+
+/* 6. CORREGIR texto en tablas y formularios */
+table th,
+table td,
+.admin-form input,
+.contact-form input,
+.checkout-form input,
+.admin-form textarea,
+.contact-form textarea,
+.checkout-form textarea {
+    color: #f0f0f0 !important;
+    background: rgba(30, 30, 35, 0.95) !important;
+}
+
 /* ==================================
    RESPONSIVE DESIGN
    ================================== */
