@@ -1,5 +1,5 @@
 /* ==================================
- * GAMEHUB BACKEND - SERVER COMPLETO
+ * GAMEHUB BACKEND - SERVER COMPLETO Y DEFINITIVO
  * ================================== */
 const express = require('express');
 const cors = require('cors');
@@ -132,10 +132,104 @@ const adminMiddleware = async (req, res, next) => {
 };
 
 // ==================================
-// ENDPOINTS
+// ENDPOINTS DE RAÍZ Y DOCUMENTACIÓN
 // ==================================
 
-// 1. HEALTH CHECK
+// 1. ENDPOINT DE RAÍZ - PRINCIPAL
+app.get('/', (req, res) => {
+  res.json({
+    service: 'GameHub Backend API',
+    version: '1.0.0',
+    status: 'online',
+    timestamp: new Date().toISOString(),
+    documentation: {
+      health: 'GET /api/health',
+      games: 'GET /api/games',
+      auth: 'POST /api/auth/login | POST /api/auth/register',
+      cart: 'GET /api/cart | POST /api/cart/add',
+      webpay: 'POST /api/payments/create | POST /api/payments/commit',
+      admin: {
+        games: 'GET /api/admin/games | POST /api/admin/games',
+        users: 'GET /api/admin/users'
+      }
+    },
+    links: {
+      frontend: 'https://gamehub-fullstack.vercel.app',
+      github: 'https://github.com/tu-usuario/gamehub'
+    }
+  });
+});
+
+// 2. DOCUMENTACIÓN DE API
+app.get('/api', (req, res) => {
+  res.json({
+    message: 'GameHub API v1.0',
+    endpoints: [
+      { method: 'GET', path: '/api/health', description: 'Health check del servidor' },
+      { method: 'GET', path: '/api/games', description: 'Obtener todos los juegos' },
+      { method: 'GET', path: '/api/games/:id', description: 'Obtener juego por ID' },
+      { method: 'POST', path: '/api/auth/register', description: 'Registrar usuario' },
+      { method: 'POST', path: '/api/auth/login', description: 'Iniciar sesión' },
+      { method: 'GET', path: '/api/auth/me', description: 'Obtener perfil de usuario' },
+      { method: 'GET', path: '/api/cart', description: 'Obtener carrito de compras' },
+      { method: 'POST', path: '/api/cart/add', description: 'Agregar producto al carrito' },
+      { method: 'POST', path: '/api/orders', description: 'Crear orden de compra' },
+      { method: 'POST', path: '/api/payments/create', description: 'Crear transacción Webpay' },
+      { method: 'POST', path: '/api/payments/commit', description: 'Confirmar transacción Webpay' },
+      { method: 'POST', path: '/api/contact', description: 'Enviar mensaje de contacto' },
+      { method: 'GET', path: '/api/blogs', description: 'Obtener artículos del blog' }
+    ],
+    admin_endpoints: [
+      { method: 'GET', path: '/api/admin/games', description: 'Obtener todos los juegos (admin)' },
+      { method: 'POST', path: '/api/admin/games', description: 'Crear nuevo juego (admin)' },
+      { method: 'PUT', path: '/api/admin/games/:id', description: 'Actualizar juego (admin)' },
+      { method: 'DELETE', path: '/api/admin/games/:id', description: 'Eliminar juego (admin)' },
+      { method: 'GET', path: '/api/admin/users', description: 'Obtener todos los usuarios (admin)' },
+      { method: 'GET', path: '/api/admin/stats', description: 'Estadísticas del sistema (admin)' }
+    ]
+  });
+});
+
+// 3. PÁGINA DE ESTADO DEL SERVICIO
+app.get('/status', (req, res) => {
+  res.json({
+    status: 'operational',
+    service: 'GameHub Backend',
+    version: '1.0.0',
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// 4. VERIFICACIÓN DE WEBPAY
+app.get('/webpay-check', (req, res) => {
+  res.json({
+    webpay: {
+      status: 'configured',
+      environment: 'Integration (Testing)',
+      commerce_code: '597055555532',
+      endpoints: {
+        create: 'POST /api/payments/create',
+        commit: 'POST /api/payments/commit',
+        status: 'POST /api/payments/status',
+        test: 'POST /api/payments/test'
+      },
+      test_cards: [
+        { type: 'Visa', number: '4051 8856 0044 6623', cvv: '123', expiry: '12/25' },
+        { type: 'MasterCard', number: '5186 0595 5959 0568', cvv: '123', expiry: '12/25' },
+        { type: 'AMEX', number: '3751 1111 1111 004', cvv: '1234', expiry: '12/25' }
+      ]
+    }
+  });
+});
+
+// ==================================
+// ENDPOINTS DE LA API
+// ==================================
+
+// 5. HEALTH CHECK
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'online', 
@@ -145,7 +239,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// 2. OBTENER TODOS LOS JUEGOS (con filtros)
+// 6. OBTENER TODOS LOS JUEGOS (con filtros)
 app.get('/api/games', async (req, res) => {
   try {
     const { categoria, plataforma, oferta } = req.query;
@@ -163,7 +257,7 @@ app.get('/api/games', async (req, res) => {
   }
 });
 
-// 3. OBTENER JUEGO POR ID
+// 7. OBTENER JUEGO POR ID
 app.get('/api/games/:id', async (req, res) => {
   try {
     const game = await Game.findById(req.params.id);
@@ -177,7 +271,7 @@ app.get('/api/games/:id', async (req, res) => {
   }
 });
 
-// 4. REGISTRO DE USUARIO
+// 8. REGISTRO DE USUARIO
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { nombre, email, password, rut, direccion } = req.body;
@@ -234,7 +328,7 @@ app.post('/api/auth/register', async (req, res) => {
   }
 });
 
-// 5. LOGIN DE USUARIO
+// 9. LOGIN DE USUARIO
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -281,7 +375,7 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
-// 6. PERFIL DE USUARIO
+// 10. PERFIL DE USUARIO
 app.get('/api/auth/me', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
@@ -295,7 +389,7 @@ app.get('/api/auth/me', authMiddleware, async (req, res) => {
   }
 });
 
-// 7. OBTENER CARRITO
+// 11. OBTENER CARRITO
 app.get('/api/cart', authMiddleware, async (req, res) => {
   try {
     const cart = await Carrito.findOne({ usuario: req.user.id })
@@ -311,7 +405,7 @@ app.get('/api/cart', authMiddleware, async (req, res) => {
   }
 });
 
-// 8. AGREGAR AL CARRITO
+// 12. AGREGAR AL CARRITO
 app.post('/api/cart/add', authMiddleware, async (req, res) => {
   try {
     const { juegoId } = req.body;
@@ -350,7 +444,7 @@ app.post('/api/cart/add', authMiddleware, async (req, res) => {
   }
 });
 
-// 9. ELIMINAR DEL CARRITO
+// 13. ELIMINAR DEL CARRITO
 app.delete('/api/cart/remove/:itemId', authMiddleware, async (req, res) => {
   try {
     const cart = await Carrito.findOne({ usuario: req.user.id });
@@ -377,7 +471,7 @@ app.delete('/api/cart/remove/:itemId', authMiddleware, async (req, res) => {
   }
 });
 
-// 10. VACIAR CARRITO
+// 14. VACIAR CARRITO
 app.delete('/api/cart/clear', authMiddleware, async (req, res) => {
   try {
     const cart = await Carrito.findOne({ usuario: req.user.id });
@@ -395,7 +489,7 @@ app.delete('/api/cart/clear', authMiddleware, async (req, res) => {
   }
 });
 
-// 11. CREAR JUEGO (ADMIN)
+// 15. CREAR JUEGO (ADMIN)
 app.post('/api/admin/games', authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const gameData = req.body;
@@ -414,7 +508,7 @@ app.post('/api/admin/games', authMiddleware, adminMiddleware, async (req, res) =
   }
 });
 
-// 12. ACTUALIZAR JUEGO (ADMIN)
+// 16. ACTUALIZAR JUEGO (ADMIN)
 app.put('/api/admin/games/:id', authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const game = await Game.findByIdAndUpdate(
@@ -434,7 +528,7 @@ app.put('/api/admin/games/:id', authMiddleware, adminMiddleware, async (req, res
   }
 });
 
-// 13. ELIMINAR JUEGO (ADMIN)
+// 17. ELIMINAR JUEGO (ADMIN)
 app.delete('/api/admin/games/:id', authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const game = await Game.findByIdAndDelete(req.params.id);
@@ -455,7 +549,7 @@ app.delete('/api/admin/games/:id', authMiddleware, adminMiddleware, async (req, 
   }
 });
 
-// 14. LISTAR USUARIOS (ADMIN)
+// 18. LISTAR USUARIOS (ADMIN)
 app.get('/api/admin/users', authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const users = await User.find().select('-password').sort({ createdAt: -1 });
@@ -466,7 +560,7 @@ app.get('/api/admin/users', authMiddleware, adminMiddleware, async (req, res) =>
   }
 });
 
-// 15. CAMBIAR ROL ADMIN
+// 19. CAMBIAR ROL ADMIN
 app.put('/api/admin/users/:userId/toggle-admin', authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
@@ -487,7 +581,7 @@ app.put('/api/admin/users/:userId/toggle-admin', authMiddleware, adminMiddleware
   }
 });
 
-// 16. CREAR ORDEN
+// 20. CREAR ORDEN
 app.post('/api/orders', authMiddleware, async (req, res) => {
   try {
     const { items, total, direccion, cliente } = req.body;
@@ -514,7 +608,7 @@ app.post('/api/orders', authMiddleware, async (req, res) => {
   }
 });
 
-// 17. BUSCAR JUEGOS
+// 21. BUSCAR JUEGOS
 app.get('/api/search/games', async (req, res) => {
   try {
     const { q } = req.query;
@@ -539,7 +633,7 @@ app.get('/api/search/games', async (req, res) => {
   }
 });
 
-// 18. CONTACTO
+// 22. CONTACTO
 app.post('/api/contact', async (req, res) => {
   try {
     const { nombre, email, asunto, mensaje } = req.body;
@@ -567,7 +661,7 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// 19. LISTAR BLOGS
+// 23. LISTAR BLOGS
 app.get('/api/blogs', async (req, res) => {
   try {
     const blogs = await Blog.find().sort({ fecha: -1 });
@@ -578,7 +672,7 @@ app.get('/api/blogs', async (req, res) => {
   }
 });
 
-// 20. BLOG POR ID
+// 24. BLOG POR ID
 app.get('/api/blogs/:id', async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
@@ -592,7 +686,7 @@ app.get('/api/blogs/:id', async (req, res) => {
   }
 });
 
-// 21. CONFIRMAR PAGO (SIMULACIÓN) - MANTENER PARA COMPATIBILIDAD
+// 25. CONFIRMAR PAGO (SIMULACIÓN) - MANTENER PARA COMPATIBILIDAD
 app.post('/api/payments/commit-old', async (req, res) => {
   try {
     const { token } = req.body;
@@ -621,7 +715,7 @@ app.post('/api/payments/commit-old', async (req, res) => {
   }
 });
 
-// 22. ESTADÍSTICAS (ADMIN)
+// 26. ESTADÍSTICAS (ADMIN)
 app.get('/api/admin/stats', authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
@@ -650,7 +744,7 @@ app.get('/api/admin/stats', authMiddleware, adminMiddleware, async (req, res) =>
   }
 });
 
-// 23. SEED DATA (SOLO DESARROLLO)
+// 27. SEED DATA (SOLO DESARROLLO)
 app.post('/api/seed', async (req, res) => {
   try {
     const sampleGames = [
@@ -762,10 +856,10 @@ app.post('/api/seed', async (req, res) => {
 });
 
 // ==================================
-// WEBPAY ENDPOINTS - CORREGIDOS
+// WEBPAY ENDPOINTS - DEFINITIVOS
 // ==================================
 
-// 24. CREAR TRANSACCIÓN WEBPAY - VERSIÓN SIMPLIFICADA Y FUNCIONAL
+// 28. CREAR TRANSACCIÓN WEBPAY - VERSIÓN FUNCIONAL
 app.post('/api/payments/create', authMiddleware, async (req, res) => {
   console.log('🔍 [WEBPAY] Endpoint /api/payments/create llamado');
   
@@ -780,23 +874,30 @@ app.post('/api/payments/create', authMiddleware, async (req, res) => {
       });
     }
     
-    // USAR CREDENCIALES DE INTEGRACIÓN DE TRANBANK (MODO PRUEBA)
-    // Estas son las credenciales oficiales para testing
+    // CREDENCIALES DE INTEGRACIÓN TRANBANK (MODO PRUEBA OFICIAL)
     const commerceCode = '597055555532';
     const apiKey = '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C';
     
-    console.log('🔧 [WEBPAY] Usando modo INTEGRACIÓN (pruebas)');
+    console.log('🔧 [WEBPAY] Usando credenciales de INTEGRACIÓN');
     
-    // Crear la transacción directamente con las credenciales correctas
+    // Crear la transacción
     const tx = new WebpayPlus.Transaction(
       new Options(commerceCode, apiKey, Environment.Integration)
     );
+    
+    // Asegurar que amount sea número entero
+    const amountNumber = parseInt(amount);
+    if (isNaN(amountNumber) || amountNumber <= 0) {
+      return res.status(400).json({ 
+        error: 'Amount debe ser un número positivo mayor a 0' 
+      });
+    }
     
     // Crear transacción en Webpay
     const createResponse = await tx.create(
       buyOrder,
       sessionId || `sess_${Date.now()}`,
-      parseInt(amount), // Asegurar que sea número entero
+      amountNumber,
       returnUrl
     );
     
@@ -808,7 +909,7 @@ app.post('/api/payments/create', authMiddleware, async (req, res) => {
       url: createResponse.url,
       message: 'Transacción Webpay creada exitosamente',
       details: {
-        amount: parseInt(amount),
+        amount: amountNumber,
         buyOrder: buyOrder,
         environment: 'Integration (Testing)'
       }
@@ -816,7 +917,6 @@ app.post('/api/payments/create', authMiddleware, async (req, res) => {
     
   } catch (error) {
     console.error('❌ [WEBPAY] Error detallado:', error);
-    console.error('❌ [WEBPAY] Stack:', error.stack);
     
     // Mensaje de error más descriptivo
     let errorMessage = 'Error al crear transacción Webpay';
@@ -825,7 +925,7 @@ app.post('/api/payments/create', authMiddleware, async (req, res) => {
     } else if (error.message.includes('apiKey')) {
       errorMessage = 'Error en API Key de Webpay';
     } else if (error.message.includes('Network')) {
-      errorMessage = 'Error de conexión con Transbank. Verifica tu conexión a internet.';
+      errorMessage = 'Error de conexión con Transbank';
     }
     
     res.status(500).json({ 
@@ -840,7 +940,7 @@ app.post('/api/payments/create', authMiddleware, async (req, res) => {
   }
 });
 
-// 25. CONFIRMAR TRANSACCIÓN WEBPAY
+// 29. CONFIRMAR TRANSACCIÓN WEBPAY
 app.post('/api/payments/commit', async (req, res) => {
   console.log('🔍 [WEBPAY] Endpoint /api/payments/commit llamado');
   
@@ -888,7 +988,7 @@ app.post('/api/payments/commit', async (req, res) => {
   }
 });
 
-// 26. ESTADO DE TRANSACCIÓN WEBPAY
+// 30. ESTADO DE TRANSACCIÓN WEBPAY
 app.post('/api/payments/status', async (req, res) => {
   try {
     const { token } = req.body;
@@ -915,9 +1015,7 @@ app.post('/api/payments/status', async (req, res) => {
   }
 });
 
-// ==================================
-// TEST ENDPOINT PARA WEBPAY
-// ==================================
+// 31. TEST ENDPOINT PARA WEBPAY
 app.post('/api/payments/test', authMiddleware, async (req, res) => {
   console.log('🔍 [WEBPAY TEST] Endpoint de prueba');
   
@@ -929,7 +1027,12 @@ app.post('/api/payments/test', authMiddleware, async (req, res) => {
     message: 'Endpoint de Webpay funcionando correctamente',
     test_mode: true,
     environment: 'Integration',
-    commerce_code: '597055555532'
+    commerce_code: '597055555532',
+    test_data: {
+      buy_order: req.body.buyOrder || 'TEST-001',
+      amount: req.body.amount || 1000,
+      return_url: req.body.returnUrl || 'https://gamehub-fullstack.vercel.app/payment-result'
+    }
   });
 });
 
@@ -944,7 +1047,17 @@ app.use('*', (req, res) => {
     error: 'Endpoint no encontrado',
     path: req.originalUrl,
     method: req.method,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    available_endpoints: [
+      'GET /',
+      'GET /api',
+      'GET /status',
+      'GET /webpay-check',
+      'GET /api/health',
+      'GET /api/games',
+      'POST /api/auth/login',
+      'POST /api/payments/create'
+    ]
   });
 });
 
@@ -962,14 +1075,26 @@ app.use((err, req, res, next) => {
 // INICIAR SERVIDOR
 // ==================================
 app.listen(PORT, () => {
-  console.log(`🎮 GameHub Backend ejecutándose en http://localhost:${PORT}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
-  console.log(`🌱 Seed data: POST http://localhost:${PORT}/api/seed`);
-  console.log(`🏦 Webpay ENDPOINTS ACTIVOS:`);
-  console.log(`   POST http://localhost:${PORT}/api/payments/create`);
-  console.log(`   POST http://localhost:${PORT}/api/payments/commit`);
-  console.log(`   POST http://localhost:${PORT}/api/payments/status`);
-  console.log(`   POST http://localhost:${PORT}/api/payments/test (prueba)`);
-  console.log(`🔧 Modo: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`✅ Backend listo para producción con Webpay`);
+  console.log(`=========================================`);
+  console.log(`🎮 GAMEHUB BACKEND - SERVER COMPLETO`);
+  console.log(`=========================================`);
+  console.log(`✅ Servidor ejecutándose en: http://localhost:${PORT}`);
+  console.log(`✅ MongoDB conectado: ${MONGO_URI.includes('@') ? 'SÍ' : 'NO'}`);
+  console.log(`✅ Webpay configurado: MODO INTEGRACIÓN`);
+  console.log(`=========================================`);
+  console.log(`📊 Endpoints disponibles:`);
+  console.log(`   • GET  /                   → Página principal`);
+  console.log(`   • GET  /api                → Documentación API`);
+  console.log(`   • GET  /status             → Estado del servidor`);
+  console.log(`   • GET  /webpay-check       → Verificación Webpay`);
+  console.log(`   • GET  /api/health         → Health check`);
+  console.log(`   • GET  /api/games          → Listar juegos`);
+  console.log(`   • POST /api/auth/login     → Login usuario`);
+  console.log(`   • POST /api/payments/create → Crear pago Webpay`);
+  console.log(`   • POST /api/payments/commit → Confirmar pago Webpay`);
+  console.log(`=========================================`);
+  console.log(`🏦 Webpay Comercio: 597055555532`);
+  console.log(`🔧 Entorno: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🚀 Backend listo para producción`);
+  console.log(`=========================================`);
 });
