@@ -10,18 +10,7 @@ const mongoose = require('mongoose');
 // ==================================
 // WEBPAY CONFIGURACIÓN
 // ==================================
-const { WebpayPlus, Environment, Options, IntegrationApiKeys } = require('transbank-sdk');
-
-// Configuración para MODO PRUEBA
-const webpayConfig = {
-  commerceCode: IntegrationApiKeys.WEBPAY_PLUS,
-  apiKey: IntegrationApiKeys.WEBPAY_PLUS_SECRET,
-  environment: Environment.Integration
-};
-
-const webpayTransaction = new WebpayPlus.Transaction(
-  new Options(webpayConfig.commerceCode, webpayConfig.apiKey, webpayConfig.environment)
-);
+const { WebpayPlus, Environment, Options } = require('transbank-sdk');
 
 const app = express();
 
@@ -29,8 +18,8 @@ const app = express();
 // CONFIGURACIÓN
 // ==================================
 const PORT = process.env.PORT || 5000;
-const JWT_SECRET = 'gamehub-jwt-secreto-2025';
-const MONGO_URI = "mongodb+srv://viplat:572364@posterdream.dialyf6.mongodb.net/GameHubDB?retryWrites=true&w=majority";
+const JWT_SECRET = process.env.JWT_SECRET || 'gamehub-jwt-secreto-2025';
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://viplat:572364@posterdream.dialyf6.mongodb.net/GameHubDB?retryWrites=true&w=majority";
 
 // ==================================
 // MIDDLEWARE
@@ -193,22 +182,18 @@ app.post('/api/auth/register', async (req, res) => {
   try {
     const { nombre, email, password, rut, direccion } = req.body;
     
-    // Validar campos requeridos
     if (!nombre || !email || !password) {
       return res.status(400).json({ error: 'Nombre, email y contraseña son requeridos' });
     }
     
-    // Verificar si el usuario ya existe
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ error: 'El email ya está registrado' });
     }
     
-    // Hashear contraseña
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     
-    // Crear usuario
     const user = new User({
       nombre,
       email,
@@ -220,7 +205,6 @@ app.post('/api/auth/register', async (req, res) => {
     
     await user.save();
     
-    // Crear token JWT
     const token = jwt.sign(
       { 
         user: { 
@@ -259,19 +243,16 @@ app.post('/api/auth/login', async (req, res) => {
       return res.status(400).json({ error: 'Email y contraseña son requeridos' });
     }
     
-    // Buscar usuario
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ error: 'Credenciales incorrectas' });
     }
     
-    // Verificar contraseña
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       return res.status(400).json({ error: 'Credenciales incorrectas' });
     }
     
-    // Crear token JWT
     const token = jwt.sign(
       { 
         user: { 
@@ -339,26 +320,21 @@ app.post('/api/cart/add', authMiddleware, async (req, res) => {
       return res.status(400).json({ error: 'ID de juego es requerido' });
     }
     
-    // Verificar que el juego existe
     const juego = await Game.findById(juegoId);
     if (!juego) {
       return res.status(404).json({ error: 'Juego no encontrado' });
     }
     
-    // Buscar o crear carrito
     let cart = await Carrito.findOne({ usuario: req.user.id });
     if (!cart) {
       cart = new Carrito({ usuario: req.user.id, items: [] });
     }
     
-    // Verificar si el juego ya está en el carrito
     const itemIndex = cart.items.findIndex(item => item.juego.toString() === juegoId);
     
     if (itemIndex > -1) {
-      // Incrementar cantidad si ya existe
       cart.items[itemIndex].cantidad += 1;
     } else {
-      // Agregar nuevo item
       cart.items.push({ juego: juegoId, cantidad: 1 });
     }
     
@@ -382,7 +358,6 @@ app.delete('/api/cart/remove/:itemId', authMiddleware, async (req, res) => {
       return res.status(404).json({ error: 'Carrito no encontrado' });
     }
     
-    // Filtrar el item a eliminar
     const initialLength = cart.items.length;
     cart.items = cart.items.filter(item => item._id.toString() !== req.params.itemId);
     
@@ -425,7 +400,6 @@ app.post('/api/admin/games', authMiddleware, adminMiddleware, async (req, res) =
   try {
     const gameData = req.body;
     
-    // Validar datos requeridos
     if (!gameData.titulo || !gameData.precio) {
       return res.status(400).json({ error: 'Título y precio son requeridos' });
     }
@@ -469,7 +443,6 @@ app.delete('/api/admin/games/:id', authMiddleware, adminMiddleware, async (req, 
       return res.status(404).json({ error: 'Juego no encontrado' });
     }
     
-    // También eliminar de carritos
     await Carrito.updateMany(
       { 'items.juego': req.params.id },
       { $pull: { items: { juego: req.params.id } } }
@@ -523,7 +496,6 @@ app.post('/api/orders', authMiddleware, async (req, res) => {
       return res.status(400).json({ error: 'Items de orden son requeridos' });
     }
     
-    // Crear orden
     const orderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     
     res.json({ 
@@ -629,7 +601,6 @@ app.post('/api/payments/commit-old', async (req, res) => {
       return res.status(400).json({ error: 'Token requerido' });
     }
     
-    // Simulación de respuesta de pago
     const response = {
       buyOrder: `BOU-${Date.now()}`,
       sessionId: `SESS-${Date.now()}`,
@@ -682,7 +653,6 @@ app.get('/api/admin/stats', authMiddleware, adminMiddleware, async (req, res) =>
 // 23. SEED DATA (SOLO DESARROLLO)
 app.post('/api/seed', async (req, res) => {
   try {
-    // Datos de ejemplo para GameHub
     const sampleGames = [
       {
         titulo: 'The Legend of Zelda: Breath of the Wild',
@@ -773,11 +743,9 @@ app.post('/api/seed', async (req, res) => {
       }
     ];
     
-    // Limpiar base de datos (opcional)
     await Game.deleteMany({});
     await Blog.deleteMany({});
     
-    // Insertar datos
     await Game.insertMany(sampleGames);
     await Blog.insertMany(sampleBlogs);
     
@@ -794,54 +762,92 @@ app.post('/api/seed', async (req, res) => {
 });
 
 // ==================================
-// WEBPAY ENDPOINTS
+// WEBPAY ENDPOINTS - DEFINITIVOS
 // ==================================
 
 // 24. CREAR TRANSACCIÓN WEBPAY
 app.post('/api/payments/create', authMiddleware, async (req, res) => {
+  console.log('🔍 [WEBPAY] Endpoint /api/payments/create llamado');
+  
   try {
     const { amount, buyOrder, sessionId, returnUrl } = req.body;
     
-    console.log('📱 Creando transacción Webpay:', { amount, buyOrder, sessionId, returnUrl });
+    console.log('📦 [WEBPAY] Datos recibidos:', { amount, buyOrder, sessionId, returnUrl });
     
     if (!amount || !buyOrder || !returnUrl) {
-      return res.status(400).json({ error: 'Faltan datos requeridos' });
+      return res.status(400).json({ 
+        error: 'Faltan datos requeridos: amount, buyOrder, returnUrl' 
+      });
     }
     
-    const response = await webpayTransaction.create(buyOrder, sessionId, amount, returnUrl);
+    // Configuración Webpay (MODO INTEGRACIÓN - PRUEBAS)
+    const webpayConfig = {
+      commerceCode: '597055555532', // Código de comercio de integración
+      apiKey: '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C', // API Key de integración
+      environment: Environment.Integration
+    };
     
-    console.log('✅ Respuesta Webpay:', response);
+    console.log('🔧 [WEBPAY] Config:', webpayConfig);
+    
+    // Crear instancia de transacción
+    const tx = new WebpayPlus.Transaction(
+      new Options(webpayConfig.commerceCode, webpayConfig.apiKey, webpayConfig.environment)
+    );
+    
+    // Crear transacción en Webpay
+    const response = await tx.create(
+      buyOrder,
+      sessionId || `sess_${Date.now()}`,
+      parseInt(amount), // Asegurar que sea número entero
+      returnUrl
+    );
+    
+    console.log('✅ [WEBPAY] Respuesta:', response);
     
     res.json({
       success: true,
       token: response.token,
       url: response.url,
-      message: 'Transacción creada exitosamente'
+      message: 'Transacción Webpay creada exitosamente'
     });
     
   } catch (error) {
-    console.error('❌ Error creando transacción Webpay:', error);
+    console.error('❌ [WEBPAY] Error:', error);
     res.status(500).json({ 
-      error: 'Error al crear transacción de pago',
-      details: error.message 
+      error: 'Error al crear transacción Webpay',
+      details: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 });
 
 // 25. CONFIRMAR TRANSACCIÓN WEBPAY
 app.post('/api/payments/commit', async (req, res) => {
+  console.log('🔍 [WEBPAY] Endpoint /api/payments/commit llamado');
+  
   try {
     const { token } = req.body;
     
-    console.log('🔍 Confirmando transacción con token:', token);
+    console.log('📦 [WEBPAY] Token recibido:', token);
     
     if (!token) {
       return res.status(400).json({ error: 'Token de transacción requerido' });
     }
     
-    const response = await webpayTransaction.commit(token);
+    // Configuración Webpay (misma que create)
+    const webpayConfig = {
+      commerceCode: '597055555532',
+      apiKey: '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C',
+      environment: Environment.Integration
+    };
     
-    console.log('✅ Transacción confirmada:', response);
+    const tx = new WebpayPlus.Transaction(
+      new Options(webpayConfig.commerceCode, webpayConfig.apiKey, webpayConfig.environment)
+    );
+    
+    const response = await tx.commit(token);
+    
+    console.log('✅ [WEBPAY] Commit response:', response);
     
     res.json({
       success: response.response_code === 0,
@@ -855,15 +861,15 @@ app.post('/api/payments/commit', async (req, res) => {
     });
     
   } catch (error) {
-    console.error('❌ Error confirmando transacción:', error);
+    console.error('❌ [WEBPAY] Commit error:', error);
     res.status(500).json({ 
-      error: 'Error al confirmar transacción',
+      error: 'Error al confirmar transacción Webpay',
       details: error.message 
     });
   }
 });
 
-// 26. ESTADO DE TRANSACCIÓN WEBPAY (OPCIONAL)
+// 26. ESTADO DE TRANSACCIÓN WEBPAY
 app.post('/api/payments/status', async (req, res) => {
   try {
     const { token } = req.body;
@@ -872,12 +878,24 @@ app.post('/api/payments/status', async (req, res) => {
       return res.status(400).json({ error: 'Token requerido' });
     }
     
-    const response = await webpayTransaction.status(token);
+    const webpayConfig = {
+      commerceCode: '597055555532',
+      apiKey: '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C',
+      environment: Environment.Integration
+    };
     
+    const tx = new WebpayPlus.Transaction(
+      new Options(webpayConfig.commerceCode, webpayConfig.apiKey, webpayConfig.environment)
+    );
+    
+    const response = await tx.status(token);
     res.json(response);
     
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      error: 'Error al obtener estado de transacción',
+      details: error.message 
+    });
   }
 });
 
@@ -885,21 +903,24 @@ app.post('/api/payments/status', async (req, res) => {
 // MANEJO DE ERRORES
 // ==================================
 
-// Endpoint no encontrado
+// Endpoint no encontrado (SIEMPRE AL FINAL)
 app.use('*', (req, res) => {
+  console.log(`❌ [404] Endpoint no encontrado: ${req.method} ${req.originalUrl}`);
   res.status(404).json({ 
     error: 'Endpoint no encontrado',
     path: req.originalUrl,
-    method: req.method
+    method: req.method,
+    timestamp: new Date().toISOString()
   });
 });
 
 // Error handler global
 app.use((err, req, res, next) => {
-  console.error('Error del servidor:', err);
+  console.error('❌ [500] Error del servidor:', err);
   res.status(500).json({ 
     error: 'Error interno del servidor',
-    message: process.env.NODE_ENV === 'development' ? err.message : undefined
+    message: process.env.NODE_ENV === 'development' ? err.message : undefined,
+    timestamp: new Date().toISOString()
   });
 });
 
@@ -909,9 +930,10 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`🎮 GameHub Backend ejecutándose en http://localhost:${PORT}`);
   console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
-  console.log(`🌱 Seed data: POST http://localhost:${PORT}/api/seed (solo desarrollo)`);
-  console.log(`🏦 Webpay: POST http://localhost:${PORT}/api/payments/create (modo prueba)`);
-  console.log(`✅ ${Object.keys(app._router.stack)
-    .filter(layer => layer.route)
-    .length} endpoints activos`);
+  console.log(`🌱 Seed data: POST http://localhost:${PORT}/api/seed`);
+  console.log(`🏦 Webpay endpoints activos:`);
+  console.log(`   POST http://localhost:${PORT}/api/payments/create`);
+  console.log(`   POST http://localhost:${PORT}/api/payments/commit`);
+  console.log(`   POST http://localhost:${PORT}/api/payments/status`);
+  console.log(`✅ Backend listo para producción`);
 });
