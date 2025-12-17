@@ -307,16 +307,16 @@ nav ul li a:hover {
     text-align: center;
     padding: 5rem 2rem;
     color: white;
-    background: rgba(15, 15, 20, 0.8);
-    backdrop-filter: blur(5px);
+    background: rgba(15, 15, 20, 0.85);
+    backdrop-filter: blur(10px);
     margin: 2rem auto;
     border-radius: 20px;
     max-width: 1200px;
     width: 90%;
-    border: 1px solid rgba(0, 255, 136, 0.2);
+    border: 2px solid rgba(0, 255, 136, 0.25);
     box-shadow: 
-        0 10px 30px rgba(0, 0, 0, 0.5),
-        inset 0 0 50px rgba(0, 255, 136, 0.05);
+        0 15px 35px rgba(0, 0, 0, 0.7),
+        inset 0 0 60px rgba(0, 255, 136, 0.1);
     position: relative;
     overflow: hidden;
 }
@@ -339,18 +339,29 @@ nav ul li a:hover {
     100% { transform: rotate(360deg); }
 }
 
+/* TÍTULOS PRINCIPALES MEJORADOS */
 .hero h1 {
     color: #00ff88;
     font-size: 3.5rem;
     margin-bottom: 1.5rem;
     font-weight: 900;
     text-shadow: 
-        0 0 10px rgba(0, 255, 136, 0.5),
-        0 0 20px rgba(0, 255, 136, 0.3);
+        0 0 15px rgba(0, 255, 136, 0.8),
+        0 0 25px rgba(0, 255, 136, 0.5),
+        0 0 35px rgba(0, 255, 136, 0.3);
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px 40px;
+    border-radius: 20px;
+    display: inline-block;
+    border: 2px solid rgba(0, 255, 136, 0.4);
+    box-shadow: 
+        0 0 25px rgba(0, 255, 136, 0.5),
+        0 0 50px rgba(0, 255, 136, 0.2);
 }
 
+/* SUBTÍTULOS MEJORADOS */
 .hero p {
     color: #f0f0f0;
     font-size: 1.25rem;
@@ -358,7 +369,13 @@ nav ul li a:hover {
     margin: 0 auto;
     line-height: 1.6;
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px 30px;
+    border-radius: 15px;
+    display: inline-block;
+    border: 1px solid rgba(255, 255, 0, 0.3);
 }
 
 /* ==================================
@@ -375,13 +392,13 @@ nav ul li a:hover {
 }
 
 .feature-card {
-    background: rgba(20, 20, 25, 0.8);
+    background: rgba(20, 20, 25, 0.85);
     backdrop-filter: blur(10px);
     border-radius: 16px;
     padding: 2rem;
     box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(0, 255, 136, 0.1);
+        0 8px 25px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(0, 255, 136, 0.15);
     text-align: center;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     color: #f0f0f0;
@@ -397,7 +414,7 @@ nav ul li a:hover {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.15), transparent);
     transition: 0.6s;
 }
 
@@ -408,9 +425,9 @@ nav ul li a:hover {
 .feature-card:hover {
     transform: translateY(-10px) scale(1.02);
     box-shadow: 
-        0 15px 35px rgba(0, 255, 136, 0.2),
-        0 0 20px rgba(0, 255, 136, 0.1),
-        inset 0 0 0 1px rgba(0, 255, 136, 0.3);
+        0 15px 35px rgba(0, 255, 136, 0.3),
+        0 0 20px rgba(0, 255, 136, 0.2),
+        inset 0 0 0 1px rgba(0, 255, 136, 0.4);
     border-color: #00ff88;
 }
 
@@ -419,7 +436,9 @@ nav ul li a:hover {
     margin-bottom: 1rem;
     font-size: 1.5rem;
     font-weight: 700;
-    text-shadow: 0 0 10px rgba(255, 255, 0, 0.3);
+    text-shadow: 
+        0 0 12px rgba(255, 255, 0, 0.6),
+        0 0 20px rgba(255, 255, 0, 0.3);
 }
 
 .feature-card p {
@@ -428,6 +447,7 @@ nav ul li a:hover {
     font-size: 1rem;
     position: relative;
     z-index: 1;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 /* ==================================
@@ -483,11 +503,12 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
 
 .game-card {
     background: rgba(20, 20, 25, 0.9);
+    backdrop-filter: blur(8px);
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(0, 255, 136, 0.1);
+        0 8px 25px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(0, 255, 136, 0.15);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
@@ -498,9 +519,9 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
 .game-card:hover {
     transform: translateY(-10px) scale(1.02);
     box-shadow: 
-        0 15px 35px rgba(0, 255, 136, 0.3),
-        0 0 25px rgba(0, 255, 136, 0.2),
-        inset 0 0 0 1px rgba(0, 255, 136, 0.4);
+        0 15px 35px rgba(0, 255, 136, 0.4),
+        0 0 25px rgba(0, 255, 136, 0.3),
+        inset 0 0 0 1px rgba(0, 255, 136, 0.5);
     border-color: #00ff88;
 }
 
@@ -553,7 +574,9 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     font-weight: 700;
     min-height: 3rem;
     line-height: 1.3;
-    text-shadow: 0 0 5px rgba(255, 255, 0, 0.3);
+    text-shadow: 
+        0 0 10px rgba(255, 255, 0, 0.5),
+        0 0 20px rgba(255, 255, 0, 0.2);
 }
 
 .game-meta {
@@ -565,7 +588,7 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
 
 .genre {
     color: #00ff88;
-    background: rgba(0, 255, 136, 0.1);
+    background: rgba(0, 255, 136, 0.15);
     padding: 4px 10px;
     border-radius: 12px;
     font-weight: 600;
@@ -573,7 +596,7 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
 
 .rating {
     color: #ffff00;
-    background: rgba(255, 255, 0, 0.1);
+    background: rgba(255, 255, 0, 0.15);
     padding: 4px 10px;
     border-radius: 12px;
     font-weight: 600;
@@ -585,8 +608,8 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     font-size: 1.75rem;
     margin-bottom: 1rem;
     text-shadow: 
-        0 0 10px rgba(255, 255, 0, 0.3),
-        0 0 20px rgba(255, 255, 0, 0.1);
+        0 0 15px rgba(255, 255, 0, 0.6),
+        0 0 30px rgba(255, 255, 0, 0.3);
 }
 
 .btn-ver-detalle {
@@ -616,7 +639,7 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 0, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 0, 0.3), transparent);
     transition: 0.5s;
 }
 
@@ -628,8 +651,8 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     background: linear-gradient(135deg, #00cc66 0%, #00aa55 100%);
     transform: translateY(-2px);
     box-shadow: 
-        0 5px 15px rgba(0, 255, 136, 0.4),
-        0 0 10px rgba(0, 255, 136, 0.2);
+        0 5px 20px rgba(0, 255, 136, 0.6),
+        0 0 15px rgba(0, 255, 136, 0.3);
 }
 
 /* ==================================
@@ -670,13 +693,13 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     background: linear-gradient(135deg, #00cc66 0%, #00aa55 100%);
     transform: translateY(-3px);
     box-shadow: 
-        0 5px 20px rgba(0, 255, 136, 0.4),
-        0 0 15px rgba(0, 255, 136, 0.3);
+        0 8px 25px rgba(0, 255, 136, 0.6),
+        0 0 20px rgba(0, 255, 136, 0.3);
 }
 
 .btn-volver {
     display: inline-block;
-    background: rgba(20, 20, 25, 0.8);
+    background: rgba(20, 20, 25, 0.9);
     color: #00ff88;
     border: 1px solid #00ff88;
     padding: 0.75rem 1.5rem;
@@ -710,8 +733,8 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     background: #00ff88;
     color: #0a0a0f;
     box-shadow: 
-        0 0 15px rgba(0, 255, 136, 0.5),
-        0 0 30px rgba(0, 255, 136, 0.2);
+        0 0 20px rgba(0, 255, 136, 0.7),
+        0 0 40px rgba(0, 255, 136, 0.3);
 }
 
 /* ==================================
@@ -725,13 +748,14 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     gap: 1.25rem;
     max-width: 600px;
     margin: 0 auto 3rem;
-    background: rgba(20, 20, 25, 0.9);
+    background: rgba(20, 20, 25, 0.92);
+    backdrop-filter: blur(8px);
     padding: 2rem;
     border-radius: 16px;
-    border: 1px solid rgba(0, 255, 136, 0.2);
+    border: 1px solid rgba(0, 255, 136, 0.25);
     box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.4),
-        0 0 20px rgba(0, 255, 136, 0.05);
+        0 10px 30px rgba(0, 0, 0, 0.8),
+        0 0 20px rgba(0, 255, 136, 0.1);
 }
 
 .admin-form label,
@@ -744,6 +768,7 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     letter-spacing: 0.5px;
     display: block;
     margin-bottom: 0.5rem;
+    text-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
 }
 
 .admin-form input,
@@ -755,10 +780,10 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
 .checkout-form input {
     width: 100%;
     padding: 0.875rem 1rem;
-    border: 1px solid rgba(0, 255, 136, 0.3);
+    border: 1px solid rgba(0, 255, 136, 0.4);
     border-radius: 8px;
     font-size: 16px;
-    background: rgba(30, 30, 35, 0.9);
+    background: rgba(30, 30, 35, 0.95);
     color: #f0f0f0;
     transition: all 0.3s ease;
     font-family: inherit;
@@ -774,9 +799,9 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     outline: none;
     border-color: #00ff88;
     box-shadow: 
-        0 0 15px rgba(0, 255, 136, 0.3),
-        inset 0 0 10px rgba(0, 255, 136, 0.1);
-    background: rgba(40, 40, 45, 0.9);
+        0 0 20px rgba(0, 255, 136, 0.4),
+        inset 0 0 15px rgba(0, 255, 136, 0.1);
+    background: rgba(40, 40, 45, 0.95);
 }
 
 /* ==================================
@@ -788,10 +813,12 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
     margin-top: 1rem;
     position: relative;
     border-radius: 12px;
-    border: 1px solid rgba(0, 255, 136, 0.2);
+    border: 1px solid rgba(0, 255, 136, 0.25);
     box-shadow: 
-        0 5px 20px rgba(0, 0, 0, 0.3),
-        inset 0 0 10px rgba(0, 255, 136, 0.05);
+        0 8px 25px rgba(0, 0, 0, 0.8),
+        inset 0 0 15px rgba(0, 255, 136, 0.1);
+    background: rgba(20, 20, 25, 0.95);
+    backdrop-filter: blur(10px);
 }
 
 .table-container::-webkit-scrollbar {
@@ -811,13 +838,13 @@ main:not(.contact-main):not(.cart-outer):not(.blog-main):not(.producto-detalle) 
 table {
     width: 100%;
     border-collapse: collapse;
-    background: rgba(20, 20, 25, 0.9);
+    background: rgba(20, 20, 25, 0.95);
 }
 
 th, td {
     padding: 1rem;
     text-align: left;
-    border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+    border-bottom: 1px solid rgba(0, 255, 136, 0.2);
     color: #f0f0f0;
 }
 
@@ -842,16 +869,16 @@ tbody tr {
 }
 
 tbody tr:hover {
-    background: rgba(0, 255, 136, 0.1);
+    background: rgba(0, 255, 136, 0.15);
     transform: scale(1.005);
 }
 
 tbody tr:nth-child(even) {
-    background: rgba(0, 255, 136, 0.03);
+    background: rgba(0, 255, 136, 0.05);
 }
 
 tbody tr:nth-child(even):hover {
-    background: rgba(0, 255, 136, 0.15);
+    background: rgba(0, 255, 136, 0.2);
 }
 
 /* ==================================
@@ -899,7 +926,7 @@ tbody tr:nth-child(even):hover {
 .edit-btn:hover {
     background: linear-gradient(135deg, #00cc66 0%, #00aa55 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 255, 136, 0.4);
+    box-shadow: 0 5px 15px rgba(0, 255, 136, 0.5);
 }
 
 .delete-btn {
@@ -910,7 +937,7 @@ tbody tr:nth-child(even):hover {
 .delete-btn:hover {
     background: linear-gradient(135deg, #ff3838 0%, #ff1e1e 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(255, 71, 87, 0.4);
+    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.5);
 }
 
 .view-btn {
@@ -921,7 +948,7 @@ tbody tr:nth-child(even):hover {
 .view-btn:hover {
     background: linear-gradient(135deg, #ffcc00 0%, #ffaa00 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(255, 255, 0, 0.4);
+    box-shadow: 0 5px 15px rgba(255, 255, 0, 0.5);
 }
 
 /* ==================================
@@ -938,6 +965,7 @@ tbody tr:nth-child(even):hover {
     width: 100%;
     flex-shrink: 0;
     border-top: 2px solid #00ff88;
+    box-shadow: 0 -5px 20px rgba(0, 255, 136, 0.1);
 }
 
 .footer-content {
@@ -967,6 +995,7 @@ tbody tr:nth-child(even):hover {
     border-radius: 6px;
     position: relative;
     overflow: hidden;
+    text-shadow: 0 0 5px rgba(255, 255, 0, 0.3);
 }
 
 .footer-links a::before {
@@ -987,7 +1016,9 @@ tbody tr:nth-child(even):hover {
 .footer-links a:hover {
     color: #00ff88;
     background: rgba(0, 255, 136, 0.1);
-    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    text-shadow: 
+        0 0 10px rgba(0, 255, 136, 0.5),
+        0 0 20px rgba(0, 255, 136, 0.2);
 }
 
 /* ==================================
@@ -999,8 +1030,12 @@ tbody tr:nth-child(even):hover {
 }
 
 @keyframes glow {
-    0%, 100% { box-shadow: 0 0 5px rgba(0, 255, 136, 0.3); }
-    50% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.6); }
+    0%, 100% { 
+        box-shadow: 0 0 10px rgba(0, 255, 136, 0.4); 
+    }
+    50% { 
+        box-shadow: 0 0 25px rgba(0, 255, 136, 0.8); 
+    }
 }
 
 @keyframes float {
@@ -1023,24 +1058,26 @@ tbody tr:nth-child(even):hover {
 
 .error-message {
     color: #ff4757;
-    background: rgba(255, 71, 87, 0.1);
-    border: 1px solid rgba(255, 71, 87, 0.3);
+    background: rgba(255, 71, 87, 0.15);
+    border: 1px solid rgba(255, 71, 87, 0.4);
     padding: 1rem;
     border-radius: 8px;
     margin: 1.5rem 0;
     text-align: center;
     animation: glow 2s ease-in-out infinite;
+    backdrop-filter: blur(5px);
 }
 
 .success-message {
     color: #00ff88;
-    background: rgba(0, 255, 136, 0.1);
-    border: 1px solid rgba(0, 255, 136, 0.3);
+    background: rgba(0, 255, 136, 0.15);
+    border: 1px solid rgba(0, 255, 136, 0.4);
     padding: 1rem;
     border-radius: 8px;
     margin: 1.5rem 0;
     text-align: center;
     animation: glow 2s ease-in-out infinite;
+    backdrop-filter: blur(5px);
 }
 
 /* ============================================================
@@ -1061,7 +1098,7 @@ main:has(.hero:only-child)::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(10, 10, 15, 0.9);
+    background: rgba(10, 10, 15, 0.7); /* MÁS TRANSPARENTE */
     z-index: 0;
     display: block !important;
 }
@@ -1091,7 +1128,7 @@ main:not(:has(.hero:only-child)) .hero,
 .contact-main .contact-hero,
 .contact-main .contact-hero-content,
 .contact-main .contact-form {
-    background: rgba(20, 20, 25, 0.95) !important;
+    background: rgba(20, 20, 25, 0.92) !important;
     color: #f0f0f0 !important;
 }
 
@@ -1099,7 +1136,7 @@ main:not(:has(.hero:only-child)) .hero,
 .cart-outer .cart-super-container,
 .cart-outer .cart-items,
 .cart-outer .cart-summary {
-    background: rgba(20, 20, 25, 0.95) !important;
+    background: rgba(20, 20, 25, 0.92) !important;
     color: #f0f0f0 !important;
 }
 
@@ -1107,13 +1144,13 @@ main:not(:has(.hero:only-child)) .hero,
 .blog-main .blogs-hero,
 .blog-main .blog-section,
 .blog-main .blog-card {
-    background: rgba(20, 20, 25, 0.95) !important;
+    background: rgba(20, 20, 25, 0.92) !important;
     color: #f0f0f0 !important;
 }
 
 /* Página de Detalle de Producto */
 .producto-detalle .detalle-container {
-    background: rgba(20, 20, 25, 0.95) !important;
+    background: rgba(20, 20, 25, 0.92) !important;
     color: #f0f0f0 !important;
 }
 
@@ -1128,6 +1165,95 @@ table td,
 .checkout-form textarea {
     color: #f0f0f0 !important;
     background: rgba(30, 30, 35, 0.95) !important;
+}
+
+/* ============================================================
+   CORRECCIÓN PARA TÍTULOS DE PÁGINAS - MEJOR VISIBILIDAD
+   ============================================================ */
+
+/* 7. MEJORAR VISIBILIDAD DE TÍTULOS EN TODAS LAS PÁGINAS */
+main:not(:has(.hero:only-child)) .hero h1,
+.blog-main .blogs-hero h1,
+.cart-outer .cart-super-container h1,
+.contact-main .contact-hero h2,
+.productos-hero h1 {
+    background: rgba(0, 0, 0, 0.75);
+    padding: 20px 40px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 25px;
+    border: 3px solid rgba(0, 255, 136, 0.4);
+    box-shadow: 
+        0 0 30px rgba(0, 255, 136, 0.6),
+        0 0 60px rgba(0, 255, 136, 0.3);
+    text-shadow: 
+        0 0 20px rgba(0, 255, 136, 0.9),
+        0 0 35px rgba(0, 255, 136, 0.6),
+        0 0 50px rgba(0, 255, 136, 0.3) !important;
+}
+
+/* 8. MEJORAR SUBTÍTULOS */
+main:not(:has(.hero:only-child)) .hero p,
+.blog-main .blogs-hero p,
+.cart-outer .cart-super-container p,
+.contact-main .contact-hero p,
+.productos-hero p {
+    background: rgba(0, 0, 0, 0.65);
+    padding: 15px 30px;
+    border-radius: 15px;
+    display: inline-block;
+    max-width: 85%;
+    border: 2px solid rgba(255, 255, 0, 0.3);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    font-size: 1.3rem;
+}
+
+/* 9. TÍTULOS ESPECÍFICOS PARA CADA PÁGINA */
+/* Página de Juegos/Productos */
+.productos-hero h1 {
+    color: #00ff88 !important;
+    font-size: 3.2rem !important;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(10, 10, 15, 0.95)) !important;
+    border-color: rgba(0, 255, 136, 0.5) !important;
+}
+
+/* Página de Blog */
+.blog-main .blogs-hero h1 {
+    color: #ffff00 !important;
+    font-size: 3.2rem !important;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(20, 10, 0, 0.95)) !important;
+    border-color: rgba(255, 255, 0, 0.5) !important;
+}
+
+/* Página de Contacto */
+.contact-main .contact-hero h2 {
+    color: #00ff88 !important;
+    font-size: 3rem !important;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(0, 20, 10, 0.95)) !important;
+    border-color: rgba(0, 255, 136, 0.5) !important;
+}
+
+/* Página de Carrito */
+.cart-outer .cart-super-container h1 {
+    color: #ffff00 !important;
+    font-size: 3.2rem !important;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(20, 15, 0, 0.95)) !important;
+    border-color: rgba(255, 255, 0, 0.5) !important;
+}
+
+/* 10. MEJORAR CONTRASTE GENERAL DE HERO SECTIONS */
+main:not(:has(.hero:only-child)) .hero,
+.blog-main .blogs-hero,
+.cart-outer .cart-super-container,
+.contact-main .contact-hero,
+.productos-hero {
+    background: rgba(15, 15, 20, 0.88) !important;
+    backdrop-filter: blur(12px);
+    border: 3px solid rgba(0, 255, 136, 0.3);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.8),
+        inset 0 0 80px rgba(0, 255, 136, 0.15);
+    padding: 4rem 2rem !important;
 }
 
 /* ==================================
@@ -1149,6 +1275,16 @@ table td,
     
     .hero h1 {
         font-size: 2.8rem;
+        padding: 15px 30px;
+    }
+    
+    main:not(:has(.hero:only-child)) .hero h1,
+    .blog-main .blogs-hero h1,
+    .cart-outer .cart-super-container h1,
+    .contact-main .contact-hero h2,
+    .productos-hero h1 {
+        font-size: 2.5rem !important;
+        padding: 15px 25px;
     }
 }
 
@@ -1172,16 +1308,28 @@ table td,
     }
     
     .hero {
-        padding: 4rem 1.5rem;
+        padding: 3rem 1.5rem;
         margin: 1rem auto 3rem auto;
     }
     
     .hero h1 {
         font-size: 2.2rem;
+        padding: 12px 20px;
     }
     
     .hero p {
         font-size: 1.1rem;
+        padding: 10px 20px;
+    }
+    
+    main:not(:has(.hero:only-child)) .hero h1,
+    .blog-main .blogs-hero h1,
+    .cart-outer .cart-super-container h1,
+    .contact-main .contact-hero h2,
+    .productos-hero h1 {
+        font-size: 2rem !important;
+        padding: 12px 20px;
+        margin-bottom: 15px;
     }
     
     .features {
@@ -1239,10 +1387,21 @@ table td,
     
     .hero h1 {
         font-size: 1.8rem;
+        padding: 10px 15px;
     }
     
     .hero p {
         font-size: 1rem;
+        padding: 8px 15px;
+    }
+    
+    main:not(:has(.hero:only-child)) .hero h1,
+    .blog-main .blogs-hero h1,
+    .cart-outer .cart-super-container h1,
+    .contact-main .contact-hero h2,
+    .productos-hero h1 {
+        font-size: 1.6rem !important;
+        padding: 10px 15px;
     }
     
     .features {
